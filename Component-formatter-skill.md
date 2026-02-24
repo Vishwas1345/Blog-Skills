@@ -115,6 +115,7 @@ npm install playwright
 **ALWAYS add these components:**
 - ✅ `[code_panel]` – Required for ALL code snippets
 - ✅ `[faq_item]` – Required for ALL FAQ questions
+- ✅ `[tips_banner]` – Required when content contains "TL;DR" (see TL;DR Detection Rules below)
 - ✅ `[tip]` – Required when content contains tip patterns (see Tip Detection Rules below)
 - ✅ `[note]` – Required when content contains "NOTE:" or "Note:" (see Note Detection Rules below)
 
@@ -198,6 +199,49 @@ PREREQUISITE: You need Node.js 18+ and npm installed on your system.
 - Wrap the entire note paragraph, including the NOTE: prefix
 - This is NOT optional - notes must always be marked
 - Notes are DIFFERENT from tips - they use a different icon in HTML conversion
+
+---
+
+### 🚨 TL;DR Detection Rules (AUTOMATIC - USES TIPS_BANNER)
+
+**When to add `[tips_banner]` marker:**
+Automatically detect and wrap TL;DR content when it contains:
+- ✅ Starts with "TL;DR" or "TL;DR:" or "TLDR" or "TLDR:"
+- ✅ Contains quick summary or key takeaways at the start of blog
+
+**🚨 CRITICAL FORMAT - USE EXACTLY THIS:**
+```
+[tips_banner title="TL;DR" icon="" bg="#FEFCE8" border="#FDE68A" color="#713F12"]Content[/tips_banner]
+```
+
+**Format Rules:**
+- **ALWAYS** use `title="TL;DR"` (exactly as shown)
+- **ALWAYS** use `icon=""` (empty string)
+- **ALWAYS** use `bg="#FEFCE8"` (light yellow background)
+- **ALWAYS** use `border="#FDE68A"` (yellow border)
+- **ALWAYS** use `color="#713F12"` (dark brown text)
+- **DO NOT** use `[tip]` or `[notice_block]` for TL;DR - only `[tips_banner]`
+
+**Examples:**
+```
+[tips_banner title="TL;DR" icon="" bg="#FEFCE8" border="#FDE68A" color="#713F12"]
+- Playwright Trace Viewer shows test execution timeline and DOM snapshots
+- Enable with trace: 'on-first-retry' in playwright.config.ts
+- Access traces locally or stream to TestDino for CI debugging
+[/tips_banner]
+```
+
+```
+[tips_banner title="TL;DR" icon="" bg="#FEFCE8" border="#FDE68A" color="#713F12"]
+Use visual regression testing to catch UI bugs automatically. Start with critical user flows, exclude dynamic elements, and run tests in CI.
+[/tips_banner]
+```
+
+**🚨 IMPORTANT:**
+- TL;DR uses `[tips_banner]` shortcode, NOT `[tip]` or `[notice_block]`
+- Always use the EXACT color values provided above
+- Keep the content exactly as written - no modifications
+- The title must be "TL;DR" (not "Summary" or anything else)
 
 ---
 

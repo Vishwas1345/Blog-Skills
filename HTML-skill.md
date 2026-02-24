@@ -335,6 +335,61 @@ The AI should analyze content and add appropriate components:
 - Blue (info): `bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"`
 - Green (success): `bg="#F0FDF4" border="#BBF7D0" color="#166534"`
 - Purple (feature): `bg="#FDF4FF" border="#F5D0FE" color="#86198F"`
+- Yellow (TL;DR): `bg="#FEFCE8" border="#FDE68A" color="#713F12"` - **Use for TL;DR only**
+
+### 🚨 TL;DR Conversion (AUTOMATIC - FROM COMPONENT FORMATTER)
+
+**When component formatter outputs `[tips_banner]` with "TL;DR" title, keep it as-is:**
+
+**🚨 CRITICAL FORMAT - DO NOT MODIFY:**
+```html
+[tips_banner title="TL;DR" icon="" bg="#FEFCE8" border="#FDE68A" color="#713F12"]
+Content here (can be bullet points or paragraphs)
+[/tips_banner]
+```
+
+**🚨 STRICT RULES:**
+- **ALWAYS** keep `title="TL;DR"` exactly as provided
+- **ALWAYS** keep `icon=""` (empty string)
+- **ALWAYS** use exact colors: `bg="#FEFCE8" border="#FDE68A" color="#713F12"`
+- **DO NOT** convert to `[notice_block]` or any other component
+- **DO NOT** change the yellow color scheme
+- Content inside can contain `<ul>`, `<li>`, `<p>`, or plain text
+
+**Examples:**
+
+**Input from component formatter:**
+```
+[tips_banner title="TL;DR" icon="" bg="#FEFCE8" border="#FDE68A" color="#713F12"]
+- Playwright Trace Viewer shows test execution timeline
+- Enable with trace: 'on-first-retry'
+- Access traces locally or stream to TestDino
+[/tips_banner]
+```
+
+**Output (keep as-is, just format content to HTML):**
+```html
+[tips_banner title="TL;DR" icon="" bg="#FEFCE8" border="#FDE68A" color="#713F12"]
+<ul>
+    <li>Playwright Trace Viewer shows test execution timeline</li>
+    <li>Enable with trace: 'on-first-retry'</li>
+    <li>Access traces locally or stream to TestDino</li>
+</ul>
+[/tips_banner]
+```
+
+**Another example (paragraph format):**
+```html
+[tips_banner title="TL;DR" icon="" bg="#FEFCE8" border="#FDE68A" color="#713F12"]
+Use visual regression testing to catch UI bugs automatically. Start with critical user flows and run tests in CI.
+[/tips_banner]
+```
+
+**🚨 IMPORTANT:**
+- TL;DR always uses yellow theme (`#FEFCE8`, `#FDE68A`, `#713F12`)
+- This is the ONLY use case for yellow-themed tips_banner
+- Never change the title from "TL;DR" to anything else
+- Keep the shortcode structure intact - only format inner content to HTML
 
 ### Info Banner
 **Use when:** Summarizing key points, highlighting important features
@@ -662,6 +717,7 @@ Before finalizing output, verify:
 **Components:**
 - [ ] CTAs converted to `[cta_regular]` shortcode
 - [ ] FAQs converted to `[faq_item]` shortcodes
+- [ ] TL;DR kept as `[tips_banner]` with exact yellow styling (title="TL;DR", bg="#FEFCE8", border="#FDE68A", color="#713F12")
 - [ ] Tips (`[tip]`) converted to `[notice_block]` with tip styling (bg="#FEFCE8", icon=fluent_info-sparkle-48-filled.svg)
 - [ ] Notes (`[note]`) converted to `[notice_block]` with note styling (bg="#FEFCE8", icon=fi_768818.svg)
 - [ ] All images have box-shadow style and proper container structure
@@ -728,6 +784,7 @@ export default defineConfig({
 6. ✅ Image box-shadow: `style="box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);"`
 7. ✅ `[tip]` markers automatically convert to `[notice_block]` with tip styling (sparkle icon)
 8. ✅ `[note]` markers automatically convert to `[notice_block]` with note styling (prerequisites icon)
+9. ✅ `[tips_banner]` with "TL;DR" title kept as-is with yellow theme (bg="#FEFCE8", border="#FDE68A", color="#713F12")
 
 **HTML STRUCTURE RULES:**
 - Use clean, minimal HTML structure
@@ -736,6 +793,7 @@ export default defineConfig({
 - Code snippets use `[code_panel]` shortcode with syntax-highlighted `<pre><code>`
 - Inline code from Confluence uses `<code>` tag with standard class attribute
 - `[ct]` shortcode converts to `<span>` with Geist Mono styling (padding-left: 5px, padding-right: 5px, font-size: 15px)
+- `[tips_banner]` with TL;DR title kept as-is with exact yellow theme colors
 - Headings use `<h1>`, `<h2>`, `<h3>` with `id` and data attributes
 - Links use full class attribute string from examples
 
