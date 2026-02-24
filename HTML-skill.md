@@ -86,16 +86,16 @@ Confluence inline code (backticks or monospace) converts to simple `<code>` tag 
 When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag:
 
 ```html
-<span class='font-size-[17px] text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] p-[4px] rounded-[4px] font-[500]' style="font-size: 15px;">code text</span>
+<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">code text</span>
 ```
 
 **🚨 CRITICAL:** The `[ct]` shortcode is used specifically for inline code within sentences from the component formatter.
 
 **Examples:**
-- `[ct]npx playwright test[/ct]` → `<span class='font-size-[17px] text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] p-[4px] rounded-[4px] font-[500]' style="font-size: 15px;">npx playwright test</span>`
-- `[ct].github/workflows/playwright.yml[/ct]` → `<span class='font-size-[17px] text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] p-[4px] rounded-[4px] font-[500]' style="font-size: 15px;">.github/workflows/playwright.yml</span>`
-- `[ct]when: always[/ct]` → `<span class='font-size-[17px] text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] p-[4px] rounded-[4px] font-[500]' style="font-size: 15px;">when: always</span>`
-- `[ct]parallel[/ct]` → `<span class='font-size-[17px] text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] p-[4px] rounded-[4px] font-[500]' style="font-size: 15px;">parallel</span>`
+- `[ct]npx playwright test[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">npx playwright test</span>`
+- `[ct].github/workflows/playwright.yml[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">.github/workflows/playwright.yml</span>`
+- `[ct]when: always[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">when: always</span>`
+- `[ct]parallel[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">parallel</span>`
 
 **When to use which:**
 - Use `<code>` tag for Confluence-sourced inline code
@@ -735,7 +735,7 @@ export default defineConfig({
 - Lists use `<ul class="ak-ul">` with `<li>` containing `<p>` tags
 - Code snippets use `[code_panel]` shortcode with syntax-highlighted `<pre><code>`
 - Inline code from Confluence uses `<code>` tag with standard class attribute
-- `[ct]` shortcode converts to `<span>` with Geist Mono class and font-size 15px inline style
+- `[ct]` shortcode converts to `<span>` with Geist Mono styling (padding-left: 5px, padding-right: 5px, font-size: 15px)
 - Headings use `<h1>`, `<h2>`, `<h3>` with `id` and data attributes
 - Links use full class attribute string from examples
 
