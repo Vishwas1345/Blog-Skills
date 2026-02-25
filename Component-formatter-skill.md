@@ -193,12 +193,21 @@ PREREQUISITE: You need Node.js 18+ and npm installed on your system.
 [/note]
 ```
 
-**🚨 IMPORTANT:**
+**🚨 IMPORTANT - DO NOT CONFUSE TIPS AND NOTES:**
 - The note marker `[note]` is REQUIRED whenever you detect a note pattern
 - Keep the "NOTE:" prefix in the content - don't remove it
 - Wrap the entire note paragraph, including the NOTE: prefix
 - This is NOT optional - notes must always be marked
-- Notes are DIFFERENT from tips - they use a different icon in HTML conversion
+
+**🚨 CRITICAL DIFFERENCE BETWEEN TIPS AND NOTES:**
+- **TIPS** (`[tip]`): Yellow theme with sparkle icon in HTML
+  - HTML: `[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="...fluent_info-sparkle-48-filled.svg"]`
+- **NOTES** (`[note]`): Green theme with NO icon in HTML
+  - HTML: `[notice_block bg="#E1FFF0" border="#A7F3D0" color="#065F46" icon=""]`
+
+**When to use which:**
+- Use `[tip]` for: TIP:, PRO TIP:, BEST PRACTICE:, REMEMBER:
+- Use `[note]` for: NOTE:, IMPORTANT:, PREREQUISITE:
 
 ---
 
@@ -259,20 +268,37 @@ Use visual regression testing to catch UI bugs automatically. Start with critica
 - 🚨 Do NOT add definitions for common terms (API, URL, database, etc.)
 - 🚨 Do NOT add definitions if the blog is already beginner-friendly
 
-**Format (uses tip_block):**
+**🚨 Format (uses tips_banner with BLUE theme):**
 ```
-Inside Tip Block: [tip_block icon_name="lightbulb" color_name="blue" content="**Term Name:** Brief, simple definition that a non-technical person can understand."] [/tip_block]
+[tips_banner title="What is Term Name?" icon="" bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"]Brief, simple definition that a non-technical person can understand.[/tips_banner]
 ```
 
-**Example:**
+**🚨 CRITICAL FORMAT RULES:**
+- Use `[tips_banner]` shortcode (NOT `[tip_block]`)
+- Title must be a question: `title="What is Term Name?"`
+- Use BLUE theme colors: `bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"`
+- Icon must be empty: `icon=""`
+- Content goes between opening and closing tags
+
+**Examples:**
+
 ```
-Inside Tip Block: [tip_block icon_name="lightbulb" color_name="blue" content="**Webhook:** A webhook is like a doorbell for your app – when something happens on another service, it automatically notifies your application."] [/tip_block]
+[tips_banner title="What is Playwright MCP?" icon="" bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"]Playwright MCP (Model Context Protocol) is an MCP server maintained by Microsoft that exposes Playwright's browser automation as a set of callable tools. It uses the MCP standard introduced by Anthropic, which lets AI models interact with external tools in a structured way.[/tips_banner]
+```
+
+```
+[tips_banner title="What is a Webhook?" icon="" bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"]A webhook is like a doorbell for your app – when something happens on another service, it automatically notifies your application.[/tips_banner]
+```
+
+```
+[tips_banner title="What is CI/CD?" icon="" bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"]CI/CD (Continuous Integration/Continuous Deployment) is an automated process that tests and deploys code changes to production whenever developers push updates.[/tips_banner]
 ```
 
 **Remember:**
 - This is OPTIONAL – many blogs won't need any definitions
 - Keep definitions SHORT and in simple language
 - Place the definition near where the term first appears
+- Title should always be "What is X?" format
 
 ---
 

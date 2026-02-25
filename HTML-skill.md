@@ -332,10 +332,49 @@ The AI should analyze content and add appropriate components:
 ```
 
 **Color Presets:**
-- Blue (info): `bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"`
+- Blue (info/definitions): `bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"` - **Use for definitions**
 - Green (success): `bg="#F0FDF4" border="#BBF7D0" color="#166534"`
 - Purple (feature): `bg="#FDF4FF" border="#F5D0FE" color="#86198F"`
 - Yellow (TL;DR): `bg="#FEFCE8" border="#FDE68A" color="#713F12"` - **Use for TL;DR only**
+
+### 🚨 Definition Conversion (AUTOMATIC - FROM COMPONENT FORMATTER)
+
+**When component formatter outputs `[tips_banner]` with "What is X?" title, keep it as-is with BLUE theme:**
+
+**🚨 CRITICAL FORMAT - DO NOT MODIFY:**
+```html
+[tips_banner title="What is Term Name?" icon="" bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"]Definition content here.[/tips_banner]
+```
+
+**🚨 STRICT RULES:**
+- **ALWAYS** keep `title="What is X?"` exactly as provided (question format)
+- **ALWAYS** keep `icon=""` (empty string)
+- **ALWAYS** use BLUE theme colors: `bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"`
+- **DO NOT** convert to any other component
+- **DO NOT** change the blue color scheme
+- Content inside should be plain text (no special formatting needed)
+
+**Examples:**
+
+**Input from component formatter:**
+```
+[tips_banner title="What is Playwright MCP?" icon="" bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"]Playwright MCP (Model Context Protocol) is an MCP server maintained by Microsoft that exposes Playwright's browser automation as a set of callable tools.[/tips_banner]
+```
+
+**Output (keep as-is):**
+```html
+[tips_banner title="What is Playwright MCP?" icon="" bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"]Playwright MCP (Model Context Protocol) is an MCP server maintained by Microsoft that exposes Playwright's browser automation as a set of callable tools.[/tips_banner]
+```
+
+**Another Example:**
+```html
+[tips_banner title="What is a Webhook?" icon="" bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"]A webhook is like a doorbell for your app – when something happens on another service, it automatically notifies your application.[/tips_banner]
+```
+
+**🚨 IMPORTANT - THREE TYPES OF tips_banner:**
+1. **Definitions** (Blue): `title="What is X?"` with `bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"`
+2. **TL;DR** (Yellow): `title="TL;DR"` with `bg="#FEFCE8" border="#FDE68A" color="#713F12"`
+3. **Quick Summaries** (Blue): Other titles like "Quick pick" with blue theme
 
 ### 🚨 TL;DR Conversion (AUTOMATIC - FROM COMPONENT FORMATTER)
 
@@ -421,7 +460,7 @@ Use visual regression testing to catch UI bugs automatically. Start with critica
 
 **Format:**
 ```html
-[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]TIP: Tip content here.[/notice_block]
+[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]<strong>Tip:</strong> Tip content here.[/notice_block]
 ```
 
 **🚨 CRITICAL STYLING:**
@@ -429,6 +468,7 @@ Use visual regression testing to catch UI bugs automatically. Start with critica
 - Border: `border="#FDE68A"` (yellow)
 - Text color: `color="#713F12"` (dark brown)
 - Icon: `icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"`
+- **BOLD the prefix** using `<strong>` tag (e.g., `<strong>Tip:</strong>`)
 
 **Examples:**
 
@@ -441,7 +481,7 @@ TIP: Start with your most visited pages. Your homepage, login page, and primary 
 
 **Output HTML:**
 ```html
-[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]TIP: Start with your most visited pages. Your homepage, login page, and primary user flow cover the highest-impact surface area. You can expand coverage later without restructuring anything.[/notice_block]
+[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]<strong>Tip:</strong> Start with your most visited pages. Your homepage, login page, and primary user flow cover the highest-impact surface area.[/notice_block]
 ```
 
 **Another Example:**
@@ -455,11 +495,12 @@ PRO TIP: Use .exclude() sparingly and only for elements you genuinely can't cont
 
 **Output:**
 ```html
-[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]PRO TIP: Use .exclude() sparingly and only for elements you genuinely can't control (third-party embeds, for example). Every exclusion is a blind spot. Track them in a comment so they don't become permanent.[/notice_block]
+[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]<strong>Pro Tip:</strong> Use .exclude() sparingly and only for elements you genuinely can't control (third-party embeds, for example).[/notice_block]
 ```
 
 **🚨 IMPORTANT:**
-- Keep the "TIP:", "PRO TIP:", etc. prefix in the content
+- **BOLD the prefix** using `<strong>` tag (e.g., `<strong>Tip:</strong>`, `<strong>Pro Tip:</strong>`)
+- Convert prefix to title case (TIP: → Tip:, PRO TIP: → Pro Tip:)
 - Use EXACT color values provided above
 - Use the specific icon URL for tips (fluent_info-sparkle-48-filled.svg)
 
@@ -469,14 +510,18 @@ PRO TIP: Use .exclude() sparingly and only for elements you genuinely can't cont
 
 **Format:**
 ```html
-[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]NOTE: Note content here.[/notice_block]
+[notice_block bg="#E1FFF0" border="#A7F3D0" color="#065F46" icon=""]<strong>Note:</strong> Note content here.[/notice_block]
 ```
 
-**🚨 CRITICAL STYLING:**
-- Background: `bg="#FEFCE8"` (light yellow) - **SAME as tips**
-- Border: `border="#FDE68A"` (yellow) - **SAME as tips**
-- Text color: `color="#713F12"` (dark brown) - **SAME as tips**
-- Icon: `icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"` - **DIFFERENT from tips (prerequisites icon)**
+**🚨 CRITICAL STYLING - GREEN THEME WITH NO ICON:**
+- Background: `bg="#E1FFF0"` (light green)
+- Border: `border="#A7F3D0"` (green)
+- Text color: `color="#065F46"` (dark green)
+- Icon: `icon=""` (empty string - NO ICON)
+
+**🚨 DO NOT CONFUSE WITH TIPS:**
+- **TIPS**: Yellow theme (`#FEFCE8`, `#FDE68A`, `#713F12`) with sparkle icon
+- **NOTES**: Green theme (`#E1FFF0`, `#A7F3D0`, `#065F46`) with NO icon
 
 **Examples:**
 
@@ -489,7 +534,7 @@ NOTE: Make sure to install dependencies before running tests.
 
 **Output HTML:**
 ```html
-[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]NOTE: Make sure to install dependencies before running tests.[/notice_block]
+[notice_block bg="#E1FFF0" border="#A7F3D0" color="#065F46" icon=""]<strong>Note:</strong> Make sure to install dependencies before running tests.[/notice_block]
 ```
 
 **Another Example:**
@@ -503,20 +548,42 @@ PREREQUISITE: You need Node.js 18+ and npm installed on your system.
 
 **Output:**
 ```html
-[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]PREREQUISITE: You need Node.js 18+ and npm installed on your system.[/notice_block]
+[notice_block bg="#E1FFF0" border="#A7F3D0" color="#065F46" icon=""]<strong>Prerequisite:</strong> You need Node.js 18+ and npm installed on your system.[/notice_block]
+```
+
+**Another Example:**
+
+**Input:**
+```
+Inside Note: [note]
+IMPORTANT: Always run tests before deploying to production.
+[/note]
+```
+
+**Output:**
+```html
+[notice_block bg="#E1FFF0" border="#A7F3D0" color="#065F46" icon=""]<strong>Important:</strong> Always run tests before deploying to production.[/notice_block]
 ```
 
 **🚨 IMPORTANT:**
-- Keep the "NOTE:", "IMPORTANT:", "PREREQUISITE:" prefix in the content
-- Use EXACT color values provided above (same as tips)
-- Use the specific icon URL for notes (fi_768818.svg) - NOT the tip icon
-- Notes and Tips use the same colors but DIFFERENT icons
+- **BOLD the prefix** using `<strong>` tag (e.g., `<strong>Note:</strong>`)
+- Convert prefix to title case (NOTE: → Note:, IMPORTANT: → Important:)
+- Use EXACT color values provided above (green theme)
+- ALWAYS use `icon=""` (empty string - NO icon for notes)
+- Notes use GREEN theme, Tips use YELLOW theme - completely different styling
 
-### Tip Block
-**Use when:** Best practices, pro tips, recommendations
+### Tip Block (DEPRECATED - Use tips_banner instead)
 
+**⚠️ NOTE:** For definitions and term explanations, use `[tips_banner]` with blue theme instead.
+
+**Legacy format (rarely used):**
 ```html
 [tip_block title="Tip Title" icon="https://testdino.com/wp-content/uploads/2026/01/fi_841743.svg"]Tip content[/tip_block]
+```
+
+**Preferred format for definitions:**
+```html
+[tips_banner title="What is Term?" icon="" bg="#DBEAFE" border="#BFDBFE" color="#1E3A8A"]Definition content[/tips_banner]
 ```
 
 ### CTA Regular (FROM COMPONENT FORMATTER)
@@ -718,8 +785,8 @@ Before finalizing output, verify:
 - [ ] CTAs converted to `[cta_regular]` shortcode
 - [ ] FAQs converted to `[faq_item]` shortcodes
 - [ ] TL;DR kept as `[tips_banner]` with exact yellow styling (title="TL;DR", bg="#FEFCE8", border="#FDE68A", color="#713F12")
-- [ ] Tips (`[tip]`) converted to `[notice_block]` with tip styling (bg="#FEFCE8", icon=fluent_info-sparkle-48-filled.svg)
-- [ ] Notes (`[note]`) converted to `[notice_block]` with note styling (bg="#FEFCE8", icon=fi_768818.svg)
+- [ ] Tips (`[tip]`) converted to `[notice_block]` with yellow styling (bg="#FEFCE8", border="#FDE68A", color="#713F12", icon=sparkle)
+- [ ] Notes (`[note]`) converted to `[notice_block]` with green styling (bg="#E1FFF0", border="#A7F3D0", color="#065F46", icon="")
 - [ ] All images have box-shadow style and proper container structure
 
 ---
@@ -782,8 +849,8 @@ export default defineConfig({
 4. ✅ WordPress shortcodes: `[code_panel]`, `[tips_banner]`, `[info_banner]`, `[notice_block]`, `[tip_block]`, `[cta_regular]`, `[faq_item]`
 5. ✅ Syntax highlighting in code blocks using inline `style` attributes with Geist Mono font and colors
 6. ✅ Image box-shadow: `style="box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);"`
-7. ✅ `[tip]` markers automatically convert to `[notice_block]` with tip styling (sparkle icon)
-8. ✅ `[note]` markers automatically convert to `[notice_block]` with note styling (prerequisites icon)
+7. ✅ `[tip]` markers automatically convert to `[notice_block]` with yellow theme and sparkle icon (bg="#FEFCE8")
+8. ✅ `[note]` markers automatically convert to `[notice_block]` with green theme and NO icon (bg="#E1FFF0", icon="")
 9. ✅ `[tips_banner]` with "TL;DR" title kept as-is with yellow theme (bg="#FEFCE8", border="#FDE68A", color="#713F12")
 
 **HTML STRUCTURE RULES:**
