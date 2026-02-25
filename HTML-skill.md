@@ -784,7 +784,8 @@ Before finalizing output, verify:
 **Components:**
 - [ ] CTAs converted to `[cta_regular]` shortcode
 - [ ] FAQs converted to `[faq_item]` shortcodes
-- [ ] TL;DR kept as `[tips_banner]` with exact yellow styling (title="TL;DR", bg="#FEFCE8", border="#FDE68A", color="#713F12")
+- [ ] Definitions kept as `[tips_banner]` with blue styling (title="What is X?", bg="#DBEAFE", border="#BFDBFE", color="#1E3A8A")
+- [ ] TL;DR kept as `[tips_banner]` with yellow styling (title="TL;DR", bg="#FEFCE8", border="#FDE68A", color="#713F12")
 - [ ] Tips (`[tip]`) converted to `[notice_block]` with yellow styling (bg="#FEFCE8", border="#FDE68A", color="#713F12", icon=sparkle)
 - [ ] Notes (`[note]`) converted to `[notice_block]` with green styling (bg="#E1FFF0", border="#A7F3D0", color="#065F46", icon="")
 - [ ] All images have box-shadow style and proper container structure
@@ -852,6 +853,7 @@ export default defineConfig({
 7. ✅ `[tip]` markers automatically convert to `[notice_block]` with yellow theme and sparkle icon (bg="#FEFCE8")
 8. ✅ `[note]` markers automatically convert to `[notice_block]` with green theme and NO icon (bg="#E1FFF0", icon="")
 9. ✅ `[tips_banner]` with "TL;DR" title kept as-is with yellow theme (bg="#FEFCE8", border="#FDE68A", color="#713F12")
+10. ✅ `[tips_banner]` with "What is X?" title kept as-is with blue theme (bg="#DBEAFE", border="#BFDBFE", color="#1E3A8A")
 
 **HTML STRUCTURE RULES:**
 - Use clean, minimal HTML structure
