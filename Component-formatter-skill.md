@@ -99,7 +99,8 @@ npm install playwright
 **🚨 IMPORTANT:**
 - Use `[ct]` for inline code mentions WITHIN sentences
 - Use `[code_panel]` for multi-line code blocks
-- Do NOT nest `[ct]` inside other components
+- `[ct]` can appear inside Tip and Note blocks - the HTML skill will apply context-aware styling (different background and text colors for Tips vs Notes)
+- Do NOT nest `[ct]` inside other components (except Tip/Note blocks)
 
 ---
 

@@ -83,15 +83,30 @@ Confluence inline code (backticks or monospace) converts to simple `<code>` tag 
 - `trace: 'on'` → `<code class="_ca0qyh40 _u5f3m5ip _n3tdyh40 _19bvm5ip _2rkofajl _11c819w5 _1reo1wug _18m91wug _1dqoglyw _1e0c1nu9 _bfhk187e _16d9qvcn _syazi7uo _vwz41kw7 _1i4q1hna _o5721jtm" data-renderer-mark="true">trace: 'on'</code>`
 
 #### 2. `[ct]` Shortcode Inline Code (for Component Formatter content)
-When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag:
+When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag with **context-aware styling**:
 
+**🚨 CRITICAL:** The `[ct]` shortcode is used specifically for inline code within sentences from the component formatter. The styling changes based on context (default, Tip, or Note).
+
+**Default Styling (outside Tip/Note blocks):**
 ```html
 <span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">code text</span>
 ```
 
-**🚨 CRITICAL:** The `[ct]` shortcode is used specifically for inline code within sentences from the component formatter.
+**Inside Note Notice Block:**
+```html
+<span class="text-[#065F46] ff-geist-mono bg-[#FDFFFE] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">code text</span>
+```
+- Background: `bg-[#FDFFFE]` (off-white)
+- Text color: `text-[#065F46]` (dark green, matches Note text color)
 
-**Examples:**
+**Inside Tip Notice Block:**
+```html
+<span class="text-[#713F12] ff-geist-mono bg-[#FFFFFF] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">code text</span>
+```
+- Background: `bg-[#FFFFFF]` (white)
+- Text color: `text-[#713F12]` (dark brown, matches Tip text color)
+
+**Examples (Default):**
 - `[ct]npx playwright test[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">npx playwright test</span>`
 - `[ct].github/workflows/playwright.yml[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">.github/workflows/playwright.yml</span>`
 - `[ct]when: always[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">when: always</span>`
@@ -100,6 +115,7 @@ When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag:
 **When to use which:**
 - Use `<code>` tag for Confluence-sourced inline code
 - Use `<span>` tag for `[ct]` shortcode from component formatter
+- **Apply context-aware styling** when `[ct]` appears inside Tip or Note notice blocks
 
 ---
 
@@ -498,6 +514,24 @@ PRO TIP: Use .exclude() sparingly and only for elements you genuinely can't cont
 [notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]<strong>Pro Tip:</strong> Use .exclude() sparingly and only for elements you genuinely can't control (third-party embeds, for example).[/notice_block]
 ```
 
+**Example with Inline Code `[ct]`:**
+
+**Input:**
+```
+Inside Tip: [tip]
+TIP: Tip content here. [ct]npx playwright test[/ct]
+[/tip]
+```
+
+**Output:**
+```html
+[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]<strong>Tip:</strong> Tip content here. <span class="text-[#713F12] ff-geist-mono bg-[#FFFFFF] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">npx playwright test</span>[/notice_block]
+```
+
+**🚨 CRITICAL FOR TIPS WITH INLINE CODE:**
+- When `[ct]` appears inside Tip notice blocks, use `bg-[#FFFFFF]` (white) and `text-[#713F12]` (dark brown)
+- This ensures the inline code stands out against the yellow Tip background
+
 **🚨 IMPORTANT:**
 - **BOLD the prefix** using `<strong>` tag (e.g., `<strong>Tip:</strong>`, `<strong>Pro Tip:</strong>`)
 - Convert prefix to title case (TIP: → Tip:, PRO TIP: → Pro Tip:)
@@ -564,6 +598,24 @@ IMPORTANT: Always run tests before deploying to production.
 ```html
 [notice_block bg="#E1FFF0" border="#A7F3D0" color="#065F46" icon=""]<strong>Important:</strong> Always run tests before deploying to production.[/notice_block]
 ```
+
+**Example with Inline Code `[ct]`:**
+
+**Input:**
+```
+Inside Note: [note]
+NOTE: Note content here. [ct]npx playwright test[/ct]
+[/note]
+```
+
+**Output:**
+```html
+[notice_block bg="#E1FFF0" border="#A7F3D0" color="#065F46" icon=""]<strong>Note:</strong> Note content here. <span class="text-[#065F46] ff-geist-mono bg-[#FDFFFE] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">npx playwright test</span>[/notice_block]
+```
+
+**🚨 CRITICAL FOR NOTES WITH INLINE CODE:**
+- When `[ct]` appears inside Note notice blocks, use `bg-[#FDFFFE]` (off-white) and `text-[#065F46]` (dark green)
+- This ensures the inline code stands out against the green Note background
 
 **🚨 IMPORTANT:**
 - **BOLD the prefix** using `<strong>` tag (e.g., `<strong>Note:</strong>`)
@@ -777,6 +829,10 @@ Before finalizing output, verify:
 **Inline Code & Text:**
 - [ ] Confluence inline code uses `<code>` tag with the standard class attribute
 - [ ] `[ct]` shortcode converts to `<span>` with Geist Mono styling and `font-size: 15px`
+- [ ] 🚨 `[ct]` uses context-aware styling:
+  - [ ] Default (outside Tip/Note): `bg-[#E9E9E9]` and `text-[#0B0C0E]`
+  - [ ] Inside Note notice blocks: `bg-[#FDFFFE]` and `text-[#065F46]`
+  - [ ] Inside Tip notice blocks: `bg-[#FFFFFF]` and `text-[#713F12]`
 - [ ] Bold text uses `<strong data-renderer-mark="true">`
 - [ ] All links have full class attribute string
 - [ ] NO custom classes or CSS added (only standard tags and example-based classes)
