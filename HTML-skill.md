@@ -18,7 +18,7 @@ This protocol guides AI to convert raw Confluence blog content into production-r
 4. **Preserve all content** – Do not remove or rewrite content, only format it
 5. **NO custom classes or CSS** – Only use standard HTML tags (`<p>`, `<ul>`, `<li>`, `<table>`, `<h2>`, `<h3>`) with no classes
 6. **ONLY allowed styling:**
-   - Image box-shadow: `style="box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);"`
+   - Global `<style>` tag for image box-shadow (applied automatically to all images - do NOT use inline styles on individual images)
    - Syntax highlighting in code blocks: inline `style` attributes with colors and Geist Mono font
    - Standard link classes (from examples below)
 7. **Where a line break occurs, do NOT add `<p>` tag** – empty lines should remain empty, not wrapped in paragraph tags
@@ -260,15 +260,15 @@ Wrap `<strong>` inside the anchor:
 
 ### Standard Image Format
 ```html
-<img style="box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);" src="IMAGE_URL" alt="Alt Text" width="WIDTH" height="HEIGHT" class="size-full wp-image-XXXX" />
+<img src="IMAGE_URL" alt="Alt Text" width="WIDTH" height="HEIGHT" class="size-full wp-image-XXXX" />
 ```
 
 ### Image Container Structure (Simplified - NO wrapper divs)
 ```html
-<img style="box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);" src="https://testdino.com/wp-content/uploads/2026/02/image-name.png" alt="Image description" width="2157" height="1201" class="size-full wp-image-XXXX" />
+<img src="https://testdino.com/wp-content/uploads/2026/02/image-name.png" alt="Image description" width="2157" height="1201" class="size-full wp-image-XXXX" />
 ```
 
-**🚨 CRITICAL:** Only use the `box-shadow` style on images. Do NOT add wrapper `<div>` containers unless explicitly shown in reference examples. Keep it simple - just the `<img>` tag with box-shadow.
+**🚨 CRITICAL:** Do NOT add inline `style="box-shadow: ..."` to individual images. The global `<style>` tag at the top of the document automatically applies `box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);` to ALL images. Keep it simple - just the `<img>` tag without inline box-shadow styles. Do NOT add wrapper `<div>` containers unless explicitly shown in reference examples.
 
 ### Image Placement Rules
 - Place images AFTER the paragraph that references them
@@ -787,15 +787,22 @@ trace: 'off' - Disables tracing entirely.
 
 ## DOCUMENT WRAPPER STRUCTURE
 
-Wrap entire output in container div:
+Wrap entire output in container div with a `<style>` tag that applies box-shadow to all images:
 
 ```html
+<style>
+img {
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);
+}
+</style>
 <div class="_19itglyw _vchhusvi _r06hglyw _1e0cj4ch" data-vc="view-page-main-content-container" data-testid="view-page-main-content-container">
 
 <!-- All content here -->
 
 </div>
 ```
+
+**🚨 CRITICAL:** Always include the `<style>` tag at the beginning of the document. This automatically applies box-shadow to ALL images, so you do NOT need to add inline `style="box-shadow: ..."` to individual `<img>` tags.
 
 ---
 
@@ -844,7 +851,8 @@ Before finalizing output, verify:
 - [ ] TL;DR kept as `[tips_banner]` with yellow styling (title="TL;DR", bg="#FEFCE8", border="#FDE68A", color="#713F12")
 - [ ] Tips (`[tip]`) converted to `[notice_block]` with yellow styling (bg="#FEFCE8", border="#FDE68A", color="#713F12", icon=sparkle)
 - [ ] Notes (`[note]`) converted to `[notice_block]` with green styling (bg="#E1FFF0", border="#A7F3D0", color="#065F46", icon="")
-- [ ] All images have box-shadow style and proper container structure
+- [ ] Global `<style>` tag included at top of document for automatic image box-shadow
+- [ ] Images use simple `<img>` tags without inline box-shadow styles (handled by global style)
 
 ---
 
@@ -905,7 +913,7 @@ export default defineConfig({
 3. ✅ Standard classes from examples (link classes, `ak-ul`, code classes)
 4. ✅ WordPress shortcodes: `[code_panel]`, `[tips_banner]`, `[info_banner]`, `[notice_block]`, `[tip_block]`, `[cta_regular]`, `[faq_item]`
 5. ✅ Syntax highlighting in code blocks using inline `style` attributes with Geist Mono font and colors
-6. ✅ Image box-shadow: `style="box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.1);"`
+6. ✅ Global `<style>` tag for image box-shadow (automatically applies to all images - no inline styles needed)
 7. ✅ `[tip]` markers automatically convert to `[notice_block]` with yellow theme and sparkle icon (bg="#FEFCE8")
 8. ✅ `[note]` markers automatically convert to `[notice_block]` with green theme and NO icon (bg="#E1FFF0", icon="")
 9. ✅ `[tips_banner]` with "TL;DR" title kept as-is with yellow theme (bg="#FEFCE8", border="#FDE68A", color="#713F12")
