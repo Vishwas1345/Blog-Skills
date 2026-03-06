@@ -101,9 +101,9 @@ When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag with
 
 **Inside Tip Notice Block:**
 ```html
-<span class="text-[#713F12] ff-geist-mono bg-[#FFFFFF] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">code text</span>
+<span class="text-[#713F12] ff-geist-mono bg-[#171717] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">code text</span>
 ```
-- Background: `bg-[#FFFFFF]` (white)
+- Background: `bg-[#171717]` (white)
 - Text color: `text-[#713F12]` (dark brown, matches Tip text color)
 
 **Examples (Default):**
@@ -124,12 +124,12 @@ When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag with
 **🚨 CRITICAL: All code blocks MUST be fully syntax highlighted with colors - see SYNTAX HIGHLIGHTING RULES below.**
 
 ### Standard Code Block
-Wrap all multi-line code in `[code_panel]` shortcode with syntax-highlighted `<pre><code>`:
+Wrap all multi-line code in `[code_light]` shortcode with syntax-highlighted `<pre><code>`:
 
 ```html
-[code_panel title="filename.ext"]
+[code_light title="filename.ext"]
 <pre><code>// code here with full syntax highlighting in colored <span> tags</code></pre>
-[/code_panel]
+[/code_light]
 ```
 
 ### Code Panel Title Guidelines
@@ -145,7 +145,7 @@ Wrap all multi-line code in `[code_panel]` shortcode with syntax-highlighted `<p
 
 ### 🚨 SYNTAX HIGHLIGHTING RULES (CRITICAL)
 
-**🚨 MANDATORY: All code inside `[code_panel]` MUST be fully syntax highlighted with colors.**
+**🚨 MANDATORY: All code inside `[code_light]` MUST be fully syntax highlighted with colors.**
 
 **This means:**
 - Every single token (keyword, function, string, variable, punctuation, comment, number) gets its own colored `<span>` tag
@@ -163,13 +163,14 @@ font-family: 'Geist Mono'; font-weight: 300;
 
 | Token Type | Color | Hex Code | Examples |
 |------------|-------|----------|----------|
-| **Keywords** | Blue | `#569CD6` | `import`, `export`, `const`, `let`, `var`, `await`, `async`, `function`, `return`, `if`, `else`, `for`, `default`, `from`, `true`, `false` |
-| **Functions/Methods** | Yellow | `#DCDCAA` | `defineConfig()`, `launch()`, `test()`, `expect()`, `console.log()` |
-| **Strings** | Orange | `#CE9178` | `'text'`, `"text"`, `` `template` `` |
-| **Properties/Variables** | Purple | `#B392F0` | `trace`, `use`, `timeout`, `baseURL`, object keys |
-| **Punctuation/Operators** | White | `#FFFFFF` | `{`, `}`, `(`, `)`, `[`, `]`, `:`, `;`, `,`, `=`, `=>`, `.` |
-| **Comments** | Green | `#6D9957` | `// comment`, `/* comment */` |
-| **Numbers** | Red | `#F27280` | `100`, `3000`, `0` |
+| **Keywords** | Blue | `#235EE7` | `import`, `export`, `const`, `let`, `var`, `await`, `async`, `function`, `return`, `if`, `else`, `for`, `default`, `from`, `true`, `false` |
+| **Functions/Methods** | Yellow | `#EAB308` | `defineConfig()`, `launch()`, `test()`, `expect()`, `console.log()` |
+| **Strings** | Orange | `#F97316` | `'text'`, `"text"`, `` `template` `` |
+| **Properties/Variables** | Purple | `#9900FF` | `trace`, `use`, `timeout`, `baseURL`, object keys |
+| **Punctuation/Operators** | Black | `#171717` | `{`, `}`, `(`, `)`, `[`, `]`, `:`, `;`, `,`, `=`, `=>`, `.` |
+| **Comments** | Gray | `#A3A3A3` | `// comment`, `/* comment */` |
+| **Numbers** | Red | `#FF3B30` | `100`, `3000`, `0` |
+| **Types/Classes** | Green | `#12B76A` | `string`, `number`, `boolean`, `Promise`, `Array`, class names |
 
 #### Spacing & Line Breaks
 - **Spaces:** Use `&nbsp;` for all spaces inside `<pre><code>`
@@ -197,9 +198,9 @@ export default defineConfig({
 
 **Output HTML (all on one logical line, `<br>` for line breaks):**
 ```html
-[code_panel title="playwright.config.ts"]
-<pre><code><span style="color: #569CD6; font-family: 'Geist Mono'; font-weight: 300;">import</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;{&nbsp;</span><span style="color: #DCDCAA; font-family: 'Geist Mono'; font-weight: 300;">defineConfig</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;}&nbsp;</span><span style="color: #569CD6; font-family: 'Geist Mono'; font-weight: 300;">from</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #CE9178; font-family: 'Geist Mono'; font-weight: 300;">'@playwright/test'</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">;</span><br><span style="color: #569CD6; font-family: 'Geist Mono'; font-weight: 300;">export</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #569CD6; font-family: 'Geist Mono'; font-weight: 300;">default</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #DCDCAA; font-family: 'Geist Mono'; font-weight: 300;">defineConfig</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">({</span><br><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;</span><span style="color: #B392F0; font-family: 'Geist Mono'; font-weight: 300;">use</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">:&nbsp;{</span><br><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #B392F0; font-family: 'Geist Mono'; font-weight: 300;">trace</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">:&nbsp;</span><span style="color: #CE9178; font-family: 'Geist Mono'; font-weight: 300;">'on'</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">,</span><br><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;},</span><br><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">});</span></code></pre>
-[/code_panel]
+[code_light title="playwright.config.ts"]
+<pre><code><span style="color: #235EE7; font-family: 'Geist Mono'; font-weight: 300;">import</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;{&nbsp;</span><span style="color: #EAB308; font-family: 'Geist Mono'; font-weight: 300;">defineConfig</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;}&nbsp;</span><span style="color: #235EE7; font-family: 'Geist Mono'; font-weight: 300;">from</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #F97316; font-family: 'Geist Mono'; font-weight: 300;">'@playwright/test'</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">;</span><br><span style="color: #235EE7; font-family: 'Geist Mono'; font-weight: 300;">export</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #235EE7; font-family: 'Geist Mono'; font-weight: 300;">default</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #EAB308; font-family: 'Geist Mono'; font-weight: 300;">defineConfig</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">({</span><br><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;</span><span style="color: #9900FF; font-family: 'Geist Mono'; font-weight: 300;">use</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">:&nbsp;{</span><br><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #9900FF; font-family: 'Geist Mono'; font-weight: 300;">trace</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">:&nbsp;</span><span style="color: #F97316; font-family: 'Geist Mono'; font-weight: 300;">'on'</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">,</span><br><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;},</span><br><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">});</span></code></pre>
+[/code_light]
 ```
 
 #### Terminal Commands Example
@@ -211,9 +212,9 @@ npm init playwright@latest
 
 **Output:**
 ```html
-[code_panel title="terminal"]
-<pre><code><span style="color: #DCDCAA; font-family: 'Geist Mono'; font-weight: 300;">npm</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">init</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #CE9178; font-family: 'Geist Mono'; font-weight: 300;">playwright@latest</span></code></pre>
-[/code_panel]
+[code_light title="terminal"]
+<pre><code><span style="color: #EAB308; font-family: 'Geist Mono'; font-weight: 300;">npm</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">init</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #F97316; font-family: 'Geist Mono'; font-weight: 300;">playwright@latest</span></code></pre>
+[/code_light]
 ```
 
 #### Code with Comments Example
@@ -228,9 +229,9 @@ const config = {
 
 **Output:**
 ```html
-[code_panel title="config.js"]
-<pre><code><span style="color: #6D9957; font-family: 'Geist Mono'; font-weight: 300;">//&nbsp;Configure&nbsp;trace&nbsp;settings</span><br><span style="color: #569CD6; font-family: 'Geist Mono'; font-weight: 300;">const</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #B392F0; font-family: 'Geist Mono'; font-weight: 300;">config</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;=&nbsp;{</span><br><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;</span><span style="color: #B392F0; font-family: 'Geist Mono'; font-weight: 300;">trace</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">:&nbsp;</span><span style="color: #CE9178; font-family: 'Geist Mono'; font-weight: 300;">'on'</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">,&nbsp;</span><span style="color: #6D9957; font-family: 'Geist Mono'; font-weight: 300;">//&nbsp;Enable&nbsp;tracing</span><br><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">};</span></code></pre>
-[/code_panel]
+[code_light title="config.js"]
+<pre><code><span style="color: #A3A3A3; font-family: 'Geist Mono'; font-weight: 300;">//&nbsp;Configure&nbsp;trace&nbsp;settings</span><br><span style="color: #235EE7; font-family: 'Geist Mono'; font-weight: 300;">const</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #9900FF; font-family: 'Geist Mono'; font-weight: 300;">config</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;=&nbsp;{</span><br><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;</span><span style="color: #9900FF; font-family: 'Geist Mono'; font-weight: 300;">trace</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">:&nbsp;</span><span style="color: #F97316; font-family: 'Geist Mono'; font-weight: 300;">'on'</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">,&nbsp;</span><span style="color: #A3A3A3; font-family: 'Geist Mono'; font-weight: 300;">//&nbsp;Enable&nbsp;tracing</span><br><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">};</span></code></pre>
+[/code_light]
 ```
 
 ---
@@ -330,7 +331,7 @@ The AI should analyze content and add appropriate components:
 | Key feature list or summary | `[info_banner]` |
 | Warning, caution, prerequisite | `[notice_block]` |
 | Pro tip, best practice | `[tip_block]` |
-| Code snippet | `[code_panel]` |
+| Code snippet | `[code_light]` |
 | FAQ question/answer | `[faq_item]` |
 | Call-to-action text | `[cta_regular]` |
 | Impactful quote/statement | `[quote_block]` |
@@ -525,11 +526,11 @@ TIP: Tip content here. [ct]npx playwright test[/ct]
 
 **Output:**
 ```html
-[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]<strong>Tip:</strong> Tip content here. <span class="text-[#713F12] ff-geist-mono bg-[#FFFFFF] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">npx playwright test</span>[/notice_block]
+[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]<strong>Tip:</strong> Tip content here. <span class="text-[#713F12] ff-geist-mono bg-[#171717] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">npx playwright test</span>[/notice_block]
 ```
 
 **🚨 CRITICAL FOR TIPS WITH INLINE CODE:**
-- When `[ct]` appears inside Tip notice blocks, use `bg-[#FFFFFF]` (white) and `text-[#713F12]` (dark brown)
+- When `[ct]` appears inside Tip notice blocks, use `bg-[#171717]` (white) and `text-[#713F12]` (dark brown)
 - This ensures the inline code stands out against the yellow Tip background
 
 **🚨 IMPORTANT:**
@@ -818,17 +819,17 @@ Before finalizing output, verify:
 - [ ] Document wrapped in main container div
 
 **Code Blocks (CRITICAL - MUST BE FULLY COLORIZED):**
-- [ ] All code blocks wrapped in `[code_panel]` shortcode
+- [ ] All code blocks wrapped in `[code_light]` shortcode
 - [ ] Code inside `<pre><code>...</code></pre>` tags
 - [ ] 🚨 EVERY SINGLE TOKEN wrapped in `<span>` with color + `font-family: 'Geist Mono'; font-weight: 300;`
 - [ ] 🚨 NO plain text in code - 100% of code must be in colored `<span>` tags
-- [ ] Keywords use `#569CD6` (blue) - import, export, const, let, var, from, etc.
-- [ ] Functions use `#DCDCAA` (yellow) - function names, method calls
-- [ ] Strings use `#CE9178` (orange) - 'text', "text", `template`
-- [ ] Properties/Variables use `#B392F0` (purple) - object keys, variable names
-- [ ] Punctuation uses `#FFFFFF` (white) - {}, (), [], :, ;, ,, =, .
-- [ ] Comments use `#6D9957` (green) - //, /* */
-- [ ] Numbers use `#F27280` (red) - 100, 3000, etc.
+- [ ] Keywords use `#235EE7` (blue) - import, export, const, let, var, from, etc.
+- [ ] Functions use `#EAB308` (yellow) - function names, method calls
+- [ ] Strings use `#F97316` (orange) - 'text', "text", `template`
+- [ ] Properties/Variables use `#9900FF` (purple) - object keys, variable names
+- [ ] Punctuation uses `#171717` (white) - {}, (), [], :, ;, ,, =, .
+- [ ] Comments use `#A3A3A3` (green) - //, /* */
+- [ ] Numbers use `#FF3B30` (red) - 100, 3000, etc.
 - [ ] Spaces replaced with `&nbsp;`
 - [ ] Line breaks use `<br>` tags
 - [ ] All spans inline (no actual newlines in HTML source)
@@ -839,7 +840,7 @@ Before finalizing output, verify:
 - [ ] 🚨 `[ct]` uses context-aware styling:
   - [ ] Default (outside Tip/Note): `bg-[#E9E9E9]` and `text-[#0B0C0E]`
   - [ ] Inside Note notice blocks: `bg-[#FDFFFE]` and `text-[#065F46]`
-  - [ ] Inside Tip notice blocks: `bg-[#FFFFFF]` and `text-[#713F12]`
+  - [ ] Inside Tip notice blocks: `bg-[#171717]` and `text-[#713F12]`
 - [ ] Bold text uses `<strong data-renderer-mark="true">`
 - [ ] All links have full class attribute string
 - [ ] NO custom classes or CSS added (only standard tags and example-based classes)
@@ -890,9 +891,9 @@ export default defineConfig({
 
 <p data-renderer-start-pos="280" data-local-id="jkl012">Add trace configuration to <code class="_ca0qyh40 _u5f3m5ip _n3tdyh40 _19bvm5ip _2rkofajl _11c819w5 _1reo1wug _18m91wug _1dqoglyw _1e0c1nu9 _bfhk187e _16d9qvcn _syazi7uo _vwz41kw7 _1i4q1hna _o5721jtm" data-renderer-mark="true">playwright.config.ts</code>:</p>
 
-[code_panel title="playwright.config.ts"]
-<pre><code><span style="color: #569CD6; font-family: 'Geist Mono'; font-weight: 300;">import</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;{&nbsp;</span><span style="color: #DCDCAA; font-family: 'Geist Mono'; font-weight: 300;">defineConfig</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;}&nbsp;</span><span style="color: #569CD6; font-family: 'Geist Mono'; font-weight: 300;">from</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #CE9178; font-family: 'Geist Mono'; font-weight: 300;">'@playwright/test'</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">;</span><br><span style="color: #569CD6; font-family: 'Geist Mono'; font-weight: 300;">export</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #569CD6; font-family: 'Geist Mono'; font-weight: 300;">default</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #DCDCAA; font-family: 'Geist Mono'; font-weight: 300;">defineConfig</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">({</span><br><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;</span><span style="color: #B392F0; font-family: 'Geist Mono'; font-weight: 300;">use</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">:&nbsp;{</span><br><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #B392F0; font-family: 'Geist Mono'; font-weight: 300;">trace</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">:&nbsp;</span><span style="color: #CE9178; font-family: 'Geist Mono'; font-weight: 300;">'on-first-retry'</span><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">,</span><br><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;},</span><br><span style="color: #FFFFFF; font-family: 'Geist Mono'; font-weight: 300;">});</span></code></pre>
-[/code_panel]
+[code_light title="playwright.config.ts"]
+<pre><code><span style="color: #235EE7; font-family: 'Geist Mono'; font-weight: 300;">import</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;{&nbsp;</span><span style="color: #EAB308; font-family: 'Geist Mono'; font-weight: 300;">defineConfig</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;}&nbsp;</span><span style="color: #235EE7; font-family: 'Geist Mono'; font-weight: 300;">from</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #F97316; font-family: 'Geist Mono'; font-weight: 300;">'@playwright/test'</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">;</span><br><span style="color: #235EE7; font-family: 'Geist Mono'; font-weight: 300;">export</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #235EE7; font-family: 'Geist Mono'; font-weight: 300;">default</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #EAB308; font-family: 'Geist Mono'; font-weight: 300;">defineConfig</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">({</span><br><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;</span><span style="color: #9900FF; font-family: 'Geist Mono'; font-weight: 300;">use</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">:&nbsp;{</span><br><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;&nbsp;&nbsp;</span><span style="color: #9900FF; font-family: 'Geist Mono'; font-weight: 300;">trace</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">:&nbsp;</span><span style="color: #F97316; font-family: 'Geist Mono'; font-weight: 300;">'on-first-retry'</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">,</span><br><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;&nbsp;},</span><br><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">});</span></code></pre>
+[/code_light]
 ```
 
 ---
@@ -911,7 +912,7 @@ export default defineConfig({
 1. ✅ Standard HTML tags: `<p>`, `<ul>`, `<li>`, `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<table>`, `<code>`, `<strong>`, `<em>`, `<a>`
 2. ✅ Data attributes: `data-renderer-start-pos`, `data-local-id`, `data-renderer-mark`, `data-indent-level`
 3. ✅ Standard classes from examples (link classes, `ak-ul`, code classes)
-4. ✅ WordPress shortcodes: `[code_panel]`, `[tips_banner]`, `[info_banner]`, `[notice_block]`, `[tip_block]`, `[cta_regular]`, `[faq_item]`
+4. ✅ WordPress shortcodes: `[code_light]`, `[tips_banner]`, `[info_banner]`, `[notice_block]`, `[tip_block]`, `[cta_regular]`, `[faq_item]`
 5. ✅ Syntax highlighting in code blocks using inline `style` attributes with Geist Mono font and colors
 6. ✅ Global `<style>` tag for image box-shadow (automatically applies to all images - no inline styles needed)
 7. ✅ `[tip]` markers automatically convert to `[notice_block]` with yellow theme and sparkle icon (bg="#FEFCE8")
@@ -923,7 +924,7 @@ export default defineConfig({
 - Use clean, minimal HTML structure
 - Common text lines go in `<p>` tags with data attributes
 - Lists use `<ul class="ak-ul">` with `<li>` containing `<p>` tags
-- Code snippets use `[code_panel]` shortcode with syntax-highlighted `<pre><code>`
+- Code snippets use `[code_light]` shortcode with syntax-highlighted `<pre><code>`
 - Inline code from Confluence uses `<code>` tag with standard class attribute
 - `[ct]` shortcode converts to `<span>` with Geist Mono styling (padding-left: 5px, padding-right: 5px, font-size: 15px)
 - `[tips_banner]` with TL;DR title kept as-is with exact yellow theme colors
