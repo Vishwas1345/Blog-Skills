@@ -70,6 +70,8 @@ npm install playwright
 [/code_panel]
 ```
 
+**🚨 CODE CONTEXT RULE (CRITICAL):** Every `[code_panel]` block MUST be preceded by a clear file name (e.g., `playwright.config.ts`) or a suitable heading/sentence that describes what the code is or where it should be executed. If the original content lacks this context, you MUST identify the file or purpose and add it as a bold label or small heading immediately before the code panel.
+
 ---
 
 ### 🚨 Inline Code Wrapping (CRITICAL)
@@ -351,6 +353,7 @@ npm init playwright@latest
 - Every keyword, function, string, variable, punctuation, comment, and number will be wrapped in colored `<span>` tags
 - Code will use Geist Mono font with weight 300
 - Make sure to detect ANY multi-line code syntax, not just the examples above
+- **Context Awareness:** Ensure the code block is preceded by a filename or suitable description.
 
 ---
 
@@ -597,6 +600,7 @@ Before finalizing output, verify:
 - [ ] Single words (npm, API, etc.) are NOT wrapped in code panels
 - [ ] Inline code within sentences is wrapped with `[ct]` shortcode
 - [ ] `[ct]` is used for file paths, function names, commands, and keywords in text
+- [ ] **Code Context:** Every code panel is preceded by a file name or a suitable descriptive heading.
 
 **Definition Blocks (if used):**
 - [ ] Maximum 2 definition blocks in the entire blog

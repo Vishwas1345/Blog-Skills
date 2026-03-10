@@ -132,6 +132,8 @@ Wrap all multi-line code in `[code_light]` shortcode with syntax-highlighted `<p
 [code_light title="filename.ext"]
 <pre><code>// code here with full syntax highlighting in colored <span> tags</code></pre>
 [/code_light]
+
+**🚨 MANDATORY TITLE:** The `title` attribute in `[code_light]` is REQUIRED. Use the filename if provided, otherwise use a suitable heading or short description of the code's purpose (e.g., `terminal`, `configuration`, `test script`).
 ```
 
 ### Code Panel Title Guidelines
@@ -824,6 +826,7 @@ Before finalizing output, verify:
 
 **Code Blocks (CRITICAL - MUST BE FULLY COLORIZED):**
 - [ ] All code blocks wrapped in `[code_light]` shortcode
+- [ ] 🚨 **Code Title:** Every `[code_light]` shortcode MUST have a descriptive `title` attribute (filename or heading)
 - [ ] Code inside `<pre><code>...</code></pre>` tags
 - [ ] 🚨 EVERY SINGLE TOKEN wrapped in `<span>` with color + `font-family: 'Geist Mono'; font-weight: 300;`
 - [ ] 🚨 NO plain text in code - 100% of code must be in colored `<span>` tags
