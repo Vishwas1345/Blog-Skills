@@ -83,6 +83,7 @@ npm install playwright
 - ✅ File paths/names in text: `playwright.config.ts`, `.github/workflows/playwright.yml`
 - ✅ Function names in text: `before.all()`, `to.be.visible()`
 - ✅ Keywords/parameters in text: `when: always`, `parallel`, `trace: 'on'`
+- ✅ **Table Cells:** Any code-like words, file names, or commands within table cells MUST be wrapped with `[ct]`
 - ✅ Short code snippets within sentences
 
 **Format:**
@@ -599,7 +600,7 @@ Before finalizing output, verify:
 - [ ] Code panels ONLY wrap actual multi-line code/commands
 - [ ] Single words (npm, API, etc.) are NOT wrapped in code panels
 - [ ] Inline code within sentences is wrapped with `[ct]` shortcode
-- [ ] `[ct]` is used for file paths, function names, commands, and keywords in text
+- [ ] `[ct]` is used for file paths, function names, commands, and keywords in text (including inside table cells)
 - [ ] **Code Context:** Every code panel is preceded by a file name or a suitable descriptive heading.
 
 **Definition Blocks (if used):**

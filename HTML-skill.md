@@ -87,7 +87,7 @@ Confluence inline code (backticks or monospace) converts to simple `<code>` tag 
 #### 2. `[ct]` Shortcode Inline Code (for Component Formatter content)
 When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag with **context-aware styling**:
 
-**🚨 CRITICAL:** The `[ct]` shortcode is used specifically for inline code within sentences from the component formatter. The styling changes based on context (default, Tip, or Note).
+**🚨 CRITICAL:** The `[ct]` shortcode is used specifically for inline code within sentences and table cells from the component formatter. The styling changes based on context (default, Tip, or Note).
 
 **Default Styling (outside Tip/Note blocks):**
 ```html
@@ -843,7 +843,7 @@ Before finalizing output, verify:
 
 **Inline Code & Text:**
 - [ ] Confluence inline code uses `<code>` tag with the standard class attribute
-- [ ] `[ct]` shortcode converts to `<span>` with Geist Mono styling and `font-size: 15px`
+- [ ] `[ct]` shortcode converts to `<span>` with Geist Mono styling and `font-size: 15px` (applies to sentences and table cells)
 - [ ] 🚨 `[ct]` uses context-aware styling:
   - [ ] Default (outside Tip/Note): `bg-[#E9E9E9]` and `text-[#0B0C0E]`
   - [ ] Inside Note notice blocks: `bg-[#FDFFFE]` and `text-[#065F46]`
