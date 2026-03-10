@@ -36,6 +36,8 @@ This protocol guides AI to convert raw Confluence blog content into production-r
 | Subsection headings | `<h3>` with `id` attribute | Sub-level heading |
 | Minor headings | `<h4>` with `id` attribute | Rare, use sparingly |
 
+**🚨 STRICT HIERARCHY:** Strict heading hierarchy must be followed (H2 > H3 > H4). No heading should jump the tag hierarchy (e.g., don't use H3 if H2 hasn't been used for the section).
+
 ### Heading Structure Examples
 
 **H1 (Blog Title):**
@@ -815,6 +817,8 @@ Before finalizing output, verify:
 - [ ] NO `<h1>` tags used
 - [ ] Blog title and sections use `<h2>` with `id` attributes
 - [ ] Subsections use `<h3>` with `id` attributes
+- [ ] **Strict Hierarchy:** Headings follow a strict H2 > H3 > H4 tag hierarchy with no jumping/skipping levels
+- [ ] All paragraphs have `data-renderer-start-pos` and `data-local-id`
 - [ ] All paragraphs have `data-renderer-start-pos` and `data-local-id`
 - [ ] Document wrapped in main container div
 

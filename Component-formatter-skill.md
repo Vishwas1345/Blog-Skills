@@ -307,10 +307,10 @@ Use visual regression testing to catch UI bugs automatically. Start with critica
 
 ### Rules
 
-| Original | Convert To |
-|----------|------------|
 | Main title / Section headings | `<h2>Heading Text</h2>` |
 | Subsections | `<h3>Subsection Text</h3>` |
+
+**🚨 STRICT HIERARCHY:** Headings MUST follow a strict hierarchy (H2 > H3 > H4). Never skip a level (e.g., skip H2 and go straight to H3).
 
 **🚨 NEVER use `<h1>`** – WordPress handles page title separately.
 
@@ -607,6 +607,7 @@ Before finalizing output, verify:
 - [ ] All main headings converted to `<h2>` tags
 - [ ] All subsections converted to `<h3>` tags
 - [ ] NO `<h1>` tags used
+- [ ] **Strict Hierarchy:** Headings follow a strict H2 > H3 > H4 tag hierarchy with no jumping/skipping levels
 
 **Required Components:**
 - [ ] All multi-line code blocks wrapped with `Inside Code Panel:` marker
