@@ -176,10 +176,11 @@ font-family: 'Geist Mono'; font-weight: 300;
 | **Numbers** | Red | `#FF3B30` | `100`, `3000`, `0` |
 | **Types/Classes** | Green | `#12B76A` | `string`, `number`, `boolean`, `Promise`, `Array`, class names |
 
-#### Spacing & Line Breaks
-- **Spaces:** Use `&nbsp;` for all spaces inside `<pre><code>`
-- **Line breaks:** Use `<br>` at the end of each line
-- **Indentation:** Use multiple `&nbsp;` for indentation (2 spaces = `&nbsp;&nbsp;`)
+#### 🚨 SPACING & INDENTATION (CRITICAL)
+- **Spaces:** Use `&nbsp;` for ALL spaces inside `<pre><code>`.
+- **🚨 NO STICKY CODE:** You MUST include `&nbsp;` between keywords and variables. For example, `const client` must NOT become `constclient`. Every space in the original code must be represented by `&nbsp;` in the HTML.
+- **Indentation:** Use multiple `&nbsp;` at the start of lines for proper vertical alignment (2 spaces = `&nbsp;&nbsp;`).
+- **Line breaks:** Use `<br>` at the end of each line inside the code block.
 
 #### Structure Rules
 1. Wrap entire code in `<pre><code>...</code></pre>`
@@ -837,8 +838,10 @@ Before finalizing output, verify:
 - [ ] Punctuation uses `#171717` (white) - {}, (), [], :, ;, ,, =, .
 - [ ] Comments use `#A3A3A3` (green) - //, /* */
 - [ ] Numbers use `#FF3B30` (red) - 100, 3000, etc.
+- [ ] 🚨 **NO Sticky Code:** No words are merged together (e.g., `const client`, NOT `constclient`). `&nbsp;` used between ALL tokens.
 - [ ] Spaces replaced with `&nbsp;`
 - [ ] Line breaks use `<br>` tags
+- [ ] Indentation uses `&nbsp;` for proper vertical alignment
 - [ ] All spans inline (no actual newlines in HTML source)
 
 **Inline Code & Text:**
