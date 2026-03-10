@@ -70,7 +70,7 @@ npm install playwright
 [/code_panel]
 ```
 
-**🚨 CODE CONTEXT RULE (CRITICAL):** Every `[code_panel]` block MUST be preceded by a clear file name (e.g., `playwright.config.ts`) or a suitable heading/sentence that describes what the code is or where it should be executed. If the original content lacks this context, you MUST identify the file or purpose and add it as a bold label or small heading immediately before the code panel.
+**🚨 CODE CONTEXT RULE (CRITICAL):** Every `[code_panel]` block MUST be preceded by a **practical file name** (e.g., `playwright.config.ts`, `auth-setup.ts`) or a suitable heading that indicates where the code is executed. **NEVER** use generic names or actions (like "Code Snippet" or "Updating Logic") as the primary identifier. If it's a test snippet, always provide a spec file name (e.g., `login.spec.ts`). If the original content lacks this context, you MUST identify the correct file name and add it as a bold label or small heading immediately before the code panel.
 
 ---
 

@@ -133,7 +133,7 @@ Wrap all multi-line code in `[code_light]` shortcode with syntax-highlighted `<p
 <pre><code>// code here with full syntax highlighting in colored <span> tags</code></pre>
 [/code_light]
 
-**🚨 MANDATORY TITLE:** The `title` attribute in `[code_light]` is REQUIRED. Use the filename if provided, otherwise use a suitable heading or short description of the code's purpose (e.g., `terminal`, `configuration`, `test script`).
+**🚨 MANDATORY TITLE:** The `title` attribute in `[code_light]` is REQUIRED. **ALWAYS** use a practical file name. If it's a test snippet, use `.spec.ts` or `.spec.js`. **NEVER** use generic action names or random labels. Use names like `playwright.config.ts`, `example.spec.ts`, or `terminal`.
 ```
 
 ### Code Panel Title Guidelines
@@ -142,10 +142,10 @@ Wrap all multi-line code in `[code_light]` shortcode with syntax-highlighted `<p
 |-----------|---------------|
 | Terminal/CLI commands | `terminal` |
 | TypeScript config | `playwright.config.ts` |
-| JavaScript file | `example.spec.js` |
+| Test file | `example.spec.ts` |
+| Setup file | `auth.setup.ts` |
 | YAML/GitHub Actions | `.github/workflows/test.yml` |
 | JSON config | `mcp.json` |
-| Generic code | `code` |
 
 ### 🚨 SYNTAX HIGHLIGHTING RULES (CRITICAL)
 
