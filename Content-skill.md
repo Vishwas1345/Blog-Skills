@@ -709,7 +709,7 @@ Write **2–3 short paragraphs:**
 - ❌ `[testimonial_block]` – Only if user explicitly requests
 
 **Always include these components:**
-- ✅ `[code_panel]` – Required for ALL code snippets
+- ✅ `[code_light]` – Required for ALL code snippets
 - ✅ `[faq_item]` – Required for ALL FAQ questions
 - ✅ `[cta_regular]` – Only if CTA = Yes in research phase
 
@@ -816,13 +816,13 @@ Content...
 [tip_block title="Tip Title" icon="https://testdino.com/wp-content/uploads/2026/01/fi_841743.svg"]Tip content here[/tip_block]
 ```
 
-#### 4. Code Panel (ALWAYS REQUIRED FOR CODE)
+#### 4. Code Light (ALWAYS REQUIRED FOR CODE)
 **Use for:** All code snippets, terminal commands, configuration files
 ```
-[code_panel title="filename.js"]
+[code_light title="filename.js"]
 <pre><code>// Your code here
 const example = "code";</code></pre>
-[/code_panel]
+[/code_light]
 ```
 
 **Title examples:** `mcp.json`, `Terminal`, `playwright.config.ts`, `Installation`
@@ -874,7 +874,7 @@ const example = "code";</code></pre>
 
 | Component | When to Use |
 |-----------|-------------|
-| Code Panel | Wrap ALL code snippets (this is always required for code) |
+| Code Light | Wrap ALL code snippets (this is always required for code) |
 | FAQ Items | FAQ section at end (required for FAQs) |
 | CTA Regular | End of conclusion (only if CTA = Yes in research) |
 
@@ -924,11 +924,11 @@ Log in to TestDino and navigate to <strong>Settings → Personal Access Tokens</
 
 Run the following command in your terminal:
 
-*Inside Code Panel:*
+*Inside Code Light:*
 
-[code_panel title="Terminal"]
+[code_light title="Terminal"]
 <pre><code>npx testdino-mcp</code></pre>
-[/code_panel]
+[/code_light]
 
 NPX always runs the latest version without manual updates.
 ```
@@ -945,7 +945,7 @@ NPX always runs the latest version without manual updates.
 - The blog title H2 is the primary heading (no H1 used)
 
 ### Body Sections
-- Code Panels for ALL code snippets (always required)
+- Code Lights for ALL code snippets (always required)
 - Other components (info_banner, notice_block, tip_block, quote_block) ONLY if explicitly requested by user
 
 ### FAQ Section
@@ -972,7 +972,7 @@ Before finalizing, verify:
 - [ ] All italic text uses `<em>` tags
 
 **Required Components:**
-- [ ] All code snippets wrapped in `[code_panel]`
+- [ ] All code snippets wrapped in `[code_light]`
 - [ ] All 5 FAQs use `[faq_item]` shortcode
 - [ ] First FAQ has `open="Yes"`, others have `open="No"`
 - [ ] CTA uses `[cta_regular]` if CTA = Yes
@@ -1151,7 +1151,7 @@ Run all checks before publishing.
 - [ ] Subsections use `<h3>` or `<h4>`
 - [ ] All lists use HTML tags (`<ul><li>` or `<ol><li>`)
 - [ ] All text formatting uses HTML (`<strong>`, `<em>`)
-- [ ] All code snippets wrapped in `[code_panel]` shortcode
+- [ ] All code snippets wrapped in `[code_light]` shortcode
 - [ ] All 5 FAQs use `[faq_item]` shortcode
 - [ ] First FAQ has `open="Yes"`, remaining have `open="No"`
 - [ ] CTA uses `[cta_regular]` shortcode (if CTA = Yes)

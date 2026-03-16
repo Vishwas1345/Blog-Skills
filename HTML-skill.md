@@ -136,7 +136,7 @@ Wrap all multi-line code in `[code_light]` shortcode with syntax-highlighted `<p
 **🚨 MANDATORY TITLE:** The `title` attribute in `[code_light]` is REQUIRED. **ALWAYS** use a practical file name. If it's a test snippet, use `.spec.ts` or `.spec.js`. **NEVER** use generic action names or random labels. Use names like `playwright.config.ts`, `example.spec.ts`, or `terminal`.
 ```
 
-### Code Panel Title Guidelines
+### Code Light Title Guidelines
 
 | Code Type | Title Example |
 |-----------|---------------|

@@ -1,6 +1,6 @@
 ---
 name: component-formatter
-description: Assign WordPress component markers to plain blog content WITHOUT changing any words. Strictly preserves all original content - only adds headings tags and component wrappers (code_panel for multi-line code, faq_item for FAQs). Never modifies, rewrites, or removes any text.
+description: Assign WordPress component markers to plain blog content WITHOUT changing any words. Strictly preserves all original content - only adds headings tags and component wrappers (code_light for multi-line code, faq_item for FAQs). Never modifies, rewrites, or removes any text.
 ---
 
 # CONTENT TO COMPONENT FORMATTER
@@ -29,7 +29,7 @@ Assign component markers to plain blog content. **STRICTLY PRESERVES all origina
 
 **✅ You ONLY:**
 1. Convert headings to `<h2>` and `<h3>` HTML tags
-2. Assign component markers (code_panel, faq_item, tables, CTA)
+2. Assign component markers (code_light, faq_item, tables, CTA)
 3. Keep EVERY SINGLE WORD exactly as provided
 4. Keep the EXACT SAME ORDER of all content
 
@@ -40,15 +40,15 @@ Assign component markers to plain blog content. **STRICTLY PRESERVES all origina
 
 ---
 
-### Code Panel Rules (STRICT)
+### Code Light Rules (STRICT)
 
-**ONLY use `[code_panel]` for ACTUAL CODE:**
+**ONLY use `[code_light]` for ACTUAL CODE:**
 - ✅ Multi-line commands (npm install, terminal commands)
 - ✅ Programming syntax (functions, variables, config files)
 - ✅ Code blocks with multiple lines
 - ✅ JSON, YAML, or configuration snippets
 
-**NEVER use `[code_panel]` for:**
+**NEVER use `[code_light]` for:**
 - ❌ Single words like `npm`, `playwright`, `API`, `before.all()` , `playwright.config.ts`, `to.be.visible()`
 - ❌ Inline mentions of tool names or keywords
 - ❌ Short phrases that aren't executable code
@@ -56,21 +56,21 @@ Assign component markers to plain blog content. **STRICTLY PRESERVES all origina
 
 **Example – WRONG:**
 ```
-Use the [code_panel]npm[/code_panel] package manager.
+Use the [code_light]npm[/code_light] package manager.
 ```
 
 **Example – CORRECT:**
 ```
 Use the npm package manager.
 
-Inside Code Panel: [code_panel]
+Inside Code Light: [code_light]
 
 npm install playwright
 
-[/code_panel]
+[/code_light]
 ```
 
-**🚨 CODE CONTEXT RULE (CRITICAL):** Every `[code_panel]` block MUST be preceded by a **practical file name** (e.g., `playwright.config.ts`, `auth-setup.ts`) or a suitable heading that indicates where the code is executed. **NEVER** use generic names or actions (like "Code Snippet" or "Updating Logic") as the primary identifier. If it's a test snippet, always provide a spec file name (e.g., `login.spec.ts`). If the original content lacks this context, you MUST identify the correct file name and add it as a bold label or small heading immediately before the code panel.
+**🚨 CODE CONTEXT RULE (CRITICAL):** Every `[code_light]` block MUST be preceded by a **practical file name** (e.g., `playwright.config.ts`, `auth-setup.ts`) or a suitable heading that indicates where the code is executed. **NEVER** use generic names or actions (like "Code Snippet" or "Updating Logic") as the primary identifier. If it's a test snippet, always provide a spec file name (e.g., `login.spec.ts`). If the original content lacks this context, you MUST identify the correct file name and add it as a bold label or small heading immediately before the code light.
 
 ---
 
@@ -101,7 +101,7 @@ npm install playwright
 
 **🚨 IMPORTANT:**
 - Use `[ct]` for inline code mentions WITHIN sentences
-- Use `[code_panel]` for multi-line code blocks
+- Use `[code_light]` for multi-line code blocks
 - `[ct]` can appear inside Tip and Note blocks - the HTML skill will apply context-aware styling (different background and text colors for Tips vs Notes)
 - Do NOT nest `[ct]` inside other components (except Tip/Note blocks)
 
@@ -117,7 +117,7 @@ npm install playwright
 ### 🚨 Component Rules:
 
 **ALWAYS add these components:**
-- ✅ `[code_panel]` – Required for ALL code snippets
+- ✅ `[code_light]` – Required for ALL code snippets
 - ✅ `[faq_item]` – Required for ALL FAQ questions
 - ✅ `[tips_banner]` – Required when content contains "TL;DR" (see TL;DR Detection Rules below)
 - ✅ `[tip]` – Required when content contains tip patterns (see Tip Detection Rules below)
@@ -321,7 +321,7 @@ Use visual regression testing to catch UI bugs automatically. Start with critica
 
 ## REQUIRED COMPONENTS
 
-### 1. Code Panel (ONLY FOR MULTI-LINE CODE BLOCKS)
+### 1. Code Light (ONLY FOR MULTI-LINE CODE BLOCKS)
 
 **Triggers:** Multi-line code blocks, terminal commands, configuration files
 
@@ -335,21 +335,21 @@ Use visual regression testing to catch UI bugs automatically. Start with critica
 - ✅ Configuration files (JSON, YAML, JS, TS)
 - ✅ Any multi-line code syntax
 
-**🚨 REMINDER:** Do NOT wrap single words, function names, or file names in code panels. Only wrap actual executable multi-line code.
+**🚨 REMINDER:** Do NOT wrap single words, function names, or file names in code lights. Only wrap actual executable multi-line code.
 
 **Format:**
 ```
-Inside Code Panel: [code_panel]
+Inside Code Light: [code_light]
 
 
 
 npm init playwright@latest
 
-[/code_panel]
+[/code_light]
 ```
 
 **🚨 CRITICAL:**
-- Leave two blank lines after `[code_panel]` opening tag
+- Leave two blank lines after `[code_light]` opening tag
 - The HTML skill will apply full syntax highlighting with colors to EVERY code token
 - Every keyword, function, string, variable, punctuation, comment, and number will be wrapped in colored `<span>` tags
 - Code will use Geist Mono font with weight 300
@@ -492,7 +492,7 @@ Inside CTA Regular: [cta_regular title="Title" description="Description" button_
 ### Guidelines
 
 1. **Introduction section:** NO components – plain paragraphs only
-2. **Code snippets:** ALWAYS wrap with Code Panel
+2. **Code snippets:** ALWAYS wrap with Code Light
 3. **FAQ section:** ALWAYS use FAQ Items for all Q&As
 4. **Tips/Warnings/Info:** Do NOT add unless user explicitly requests
 5. **CTA:** Only if user requests or CTA = Yes
@@ -556,13 +556,13 @@ Getting started with Playwright API testing takes about five minutes.
 
 Open your terminal and run this command:
 
-Inside Code Panel: [code_panel]
+Inside Code Light: [code_light]
 
 
 
 npm init playwright@latest
 
-[/code_panel]
+[/code_light]
 
 Store API tokens in environment variables, never commit them to your repository.
 
@@ -596,12 +596,12 @@ Before finalizing output, verify:
 - [ ] Content flow/order is EXACTLY the same as input
 - [ ] No paragraphs or sections were rearranged
 
-**Code Panel Usage:**
-- [ ] Code panels ONLY wrap actual multi-line code/commands
-- [ ] Single words (npm, API, etc.) are NOT wrapped in code panels
+**Code Light Usage:**
+- [ ] Code lights ONLY wrap actual multi-line code/commands
+- [ ] Single words (npm, API, etc.) are NOT wrapped in code lights
 - [ ] Inline code within sentences is wrapped with `[ct]` shortcode
 - [ ] `[ct]` is used for file paths, function names, commands, and keywords in text (including inside table cells)
-- [ ] **Code Context:** Every code panel is preceded by a file name or a suitable descriptive heading.
+- [ ] **Code Context:** Every code light is preceded by a file name or a suitable descriptive heading.
 
 **Definition Blocks (if used):**
 - [ ] Maximum 2 definition blocks in the entire blog
@@ -615,7 +615,7 @@ Before finalizing output, verify:
 - [ ] **Strict Hierarchy:** Headings follow a strict H2 > H3 > H4 tag hierarchy with no jumping/skipping levels
 
 **Required Components:**
-- [ ] All multi-line code blocks wrapped with `Inside Code Panel:` marker
+- [ ] All multi-line code blocks wrapped with `Inside Code Light:` marker
 - [ ] All tips (TIP:, PRO TIP:, etc.) wrapped with `Inside Tip:` marker
 - [ ] All notes (NOTE:, IMPORTANT:, PREREQUISITE:) wrapped with `Inside Note:` marker
 - [ ] All FAQs use `Inside FAQ Item:` format
