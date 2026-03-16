@@ -32,7 +32,7 @@ You are a **Senior Technical Editor and Lead Content Reviewer** at a top-tier te
 - ✅ **Contextual Colors:**
     - Outside Tip/Note: `bg-[#E9E9E9]` / `text-[#0B0C0E]`
     - Inside Note notice blocks: `bg-[#FDFFFE]` / `text-[#065F46]`
-    - Inside Tip notice blocks: `bg-[#171717]` / `text-[#713F12]` (ensures contrast against yellow)
+    - Inside Tip notice blocks: `bg-[#FFFFFF]` / `text-[#713F12]` (ensures contrast against yellow)
 - ✅ **Table Cells:** Ensure ALL code-like text in table cells is wrapped in these styled spans.
 
 ### 4. Content Quality & Flow

@@ -166,6 +166,7 @@ PRO TIP: Use .exclude() sparingly and only for elements you genuinely can't cont
 - Keep the "TIP:" prefix in the content - don't remove it
 - Wrap the entire tip paragraph, including the TIP: prefix
 - This is NOT optional - tips must always be marked
+- **Inline Code inside Tips**: If inline code inside a notice block for tip conversion (`[ct]`) is present, it MUST have `#FFFFFF` background (`bg-[#FFFFFF]`) and `#713F12` text color (`text-[#713F12]`).
 
 ---
 
@@ -206,6 +207,7 @@ PREREQUISITE: You need Node.js 18+ and npm installed on your system.
 **🚨 CRITICAL DIFFERENCE BETWEEN TIPS AND NOTES:**
 - **TIPS** (`[tip]`): Yellow theme with sparkle icon in HTML
   - HTML: `[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="...fluent_info-sparkle-48-filled.svg"]`
+  - Inline code `[ct]` inside tips MUST use `bg-[#FFFFFF]` and `text-[#713F12]`
 - **NOTES** (`[note]`): Green theme with NO icon in HTML
   - HTML: `[notice_block bg="#E1FFF0" border="#A7F3D0" color="#065F46" icon=""]`
 

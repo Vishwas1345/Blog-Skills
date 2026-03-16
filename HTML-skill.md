@@ -531,11 +531,11 @@ TIP: Tip content here. [ct]npx playwright test[/ct]
 
 **Output:**
 ```html
-[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]<strong>Tip:</strong> Tip content here. <span class="text-[#713F12] ff-geist-mono bg-[#171717] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">npx playwright test</span>[/notice_block]
+[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="https://testdino.com/wp-content/uploads/2026/01/fluent_info-sparkle-48-filled.svg"]<strong>Tip:</strong> Tip content here. <span class="text-[#713F12] ff-geist-mono bg-[#FFFFFF] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">npx playwright test</span>[/notice_block]
 ```
 
 **🚨 CRITICAL FOR TIPS WITH INLINE CODE:**
-- When `[ct]` appears inside Tip notice blocks, use `bg-[#171717]` (white) and `text-[#713F12]` (dark brown)
+- When `[ct]` appears inside Tip notice blocks, use `bg-[#FFFFFF]` (white) and `text-[#713F12]` (dark brown)
 - This ensures the inline code stands out against the yellow Tip background
 
 **🚨 IMPORTANT:**
@@ -850,7 +850,7 @@ Before finalizing output, verify:
 - [ ] 🚨 `[ct]` uses context-aware styling:
   - [ ] Default (outside Tip/Note): `bg-[#E9E9E9]` and `text-[#0B0C0E]`
   - [ ] Inside Note notice blocks: `bg-[#FDFFFE]` and `text-[#065F46]`
-  - [ ] Inside Tip notice blocks: `bg-[#171717]` and `text-[#713F12]`
+  - [ ] Inside Tip notice blocks: `bg-[#FFFFFF]` and `text-[#713F12]`
 - [ ] Bold text uses `<strong data-renderer-mark="true">`
 - [ ] All links have full class attribute string
 - [ ] NO custom classes or CSS added (only standard tags and example-based classes)
