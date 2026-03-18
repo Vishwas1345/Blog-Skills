@@ -429,7 +429,7 @@ PREREQUISITE: You need Node.js 18+ and npm installed on your system.
 
 **Format:**
 ```
-Inside FAQ Item: [faq_item question="Question text here?" answer="Answer text here."] [/faq_item]
+Inside FAQ Item: [faq_item question="Question text here?"]answer="Answer text here. [/faq_item]
 ```
 
 ---
@@ -570,9 +570,9 @@ Always clean up test data after your tests run. Use [ct]afterEach[/ct] hooks to 
 
 <h2>FAQs</h2>
 
-Inside FAQ Item: [faq_item open="Yes" question="Can Playwright test GraphQL APIs?" answer="Yes, Playwright can test GraphQL APIs. Send POST requests with your GraphQL query in the request body."] [/faq_item]
+Inside FAQ Item: [faq_item question="Can Playwright test GraphQL APIs?"] Yes, Playwright can test GraphQL APIs. Send POST requests with your GraphQL query in the request body. [/faq_item]
 
-Inside FAQ Item: [faq_item open="No" question="How do I test file uploads with Playwright API?" answer="Use the multipart option in your POST request."] [/faq_item]
+Inside FAQ Item: [faq_item open="No" question="How do I test file uploads with Playwright API?"] Use the multipart option in your POST request. [/faq_item]
 ```
 
 **Note:** The `[ct]afterEach[/ct]` wraps inline code within a sentence. This will be converted to a styled span in the HTML skill.
