@@ -429,12 +429,8 @@ PREREQUISITE: You need Node.js 18+ and npm installed on your system.
 
 **Format:**
 ```
-Inside FAQ Item: [faq_item open="OPEN" question="Question text here?" answer="Answer text here."] [/faq_item]
+Inside FAQ Item: [faq_item question="Question text here?" answer="Answer text here."] [/faq_item]
 ```
-
-**Rules:**
-- First FAQ: `open="Yes"` (expanded)
-- All others: `open="No"` (collapsed)
 
 ---
 
