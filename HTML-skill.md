@@ -681,12 +681,11 @@ Try TestDino Free
 **Use when:** Content has FAQ section with questions and answers
 
 ```html
-[faq_item question="Question text?" open="Yes"]Answer text[/faq_item]
-[faq_item question="Another question?" open="No"]Answer text[/faq_item]
+[faq_item question="Question text?"]Answer text[/faq_item]
+[faq_item question="Another question?"]Answer text[/faq_item]
 ```
 
-- First FAQ: `open="Yes"` (expanded)
-- All others: `open="No"` (collapsed)
+- Do NOT add an `open` attribute — omit it entirely
 
 ---
 
