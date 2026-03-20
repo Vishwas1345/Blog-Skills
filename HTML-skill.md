@@ -685,8 +685,11 @@ Try TestDino Free
 [faq_item question="Another question?"]Answer text[/faq_item]
 ```
 
+<<<<<<< HEAD
 - Do NOT add an `open` attribute — omit it entirely
 
+=======
+>>>>>>> aefb32aca6e247e9a03dad384493f2620e28d684
 ---
 
 ## CTA DETECTION PATTERNS
