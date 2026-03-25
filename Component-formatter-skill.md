@@ -107,6 +107,24 @@ npm install playwright
 
 ---
 
+### 🚨 Table Rules (CRITICAL)
+
+**The first row of every table MUST be a header row.** When the HTML skill converts the output, it will wrap the first row in `<thead>` with `<th>` cells. To make this work correctly, the first row of any table in the content MUST always contain the column headers (not data).
+
+**Rules for tables in component-formatted content:**
+- ✅ The first row is ALWAYS the header row with column names
+- ✅ Any code-like content in table cells (header or data) MUST be wrapped with `[ct]`
+- ❌ NEVER put data in the first row — it is always the header
+- ❌ NEVER start a table with a data row and put headers elsewhere
+
+**The HTML skill will produce this structure for every table:**
+```
+First row  → <thead> with <th> cells
+All other rows → <tbody> with <td> cells
+```
+
+---
+
 ### Input/Output Rules
 
 1. **Input:** Plain blog content (text with headings, paragraphs, code, lists)
@@ -608,6 +626,10 @@ Before finalizing output, verify:
 - [ ] Grammar/spelling mistakes from original are KEPT as-is
 - [ ] Content flow/order is EXACTLY the same as input
 - [ ] No paragraphs or sections were rearranged
+
+**Tables:**
+- [ ] First row of every table contains column headers (not data) — HTML skill will wrap it in `<thead>` with `<th>` cells
+- [ ] All code-like content in table cells is wrapped with `[ct]`
 
 **Code Light Usage:**
 - [ ] Code lights ONLY wrap actual multi-line code/commands

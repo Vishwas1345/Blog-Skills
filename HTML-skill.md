@@ -165,6 +165,8 @@ font-family: 'Geist Mono'; font-weight: 300;
 
 #### Color Reference
 
+> **🚨 TERMINAL EXCEPTION:** The color table below applies ONLY to code files (`.ts`, `.js`, `.yml`, `.json`, etc.). For `title="terminal"` blocks, ALL tokens use `#000000` (black) — see the Terminal/CLI Exception Rule below.
+
 | Token Type | Color | Hex Code | Examples |
 |------------|-------|----------|----------|
 | **Keywords** | Blue | `#0000FF` | `import`, `export`, `const`, `let`, `var`, `await`, `async`, `function`, `return`, `if`, `else`, `for`, `default`, `from`, `true`, `false` |
@@ -208,6 +210,15 @@ export default defineConfig({
 [/code_light]
 ```
 
+#### 🚨 TERMINAL/CLI EXCEPTION RULE (CRITICAL)
+
+**When `title="terminal"` — ALL tokens MUST use `#000000` (black). No color syntax highlighting for terminal/CLI commands.**
+
+Terminals have no theme. There are no keywords, strings, or functions in a shell command — every token, word, flag, and character is plain black `#000000`.
+
+- ❌ **NEVER** use `#FFA500`, `#F97316`, `#0000FF`, `#800080`, or any other color in terminal blocks
+- ✅ **ALWAYS** use `color: #000000` for every single `<span>` in a `title="terminal"` block
+
 #### Terminal Commands Example
 
 **Input:**
@@ -218,7 +229,7 @@ npm init playwright@latest
 **Output:**
 ```html
 [code_light title="terminal"]
-<pre><code><span style="color: #FFA500; font-family: 'Geist Mono'; font-weight: 300;">npm</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">init</span><span style="color: #171717; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #F97316; font-family: 'Geist Mono'; font-weight: 300;">playwright@latest</span></code></pre>
+<pre><code><span style="color: #000000; font-family: 'Geist Mono'; font-weight: 300;">npm</span><span style="color: #000000; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #000000; font-family: 'Geist Mono'; font-weight: 300;">init</span><span style="color: #000000; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #000000; font-family: 'Geist Mono'; font-weight: 300;">playwright@latest</span></code></pre>
 [/code_light]
 ```
 
@@ -322,6 +333,47 @@ Wrap `<strong>` inside the anchor:
     </li>
 </ul>
 ```
+
+---
+
+## TABLE CONVERSION
+
+### 🚨 CRITICAL: First Row Is ALWAYS `<thead>`
+
+Every HTML table MUST use `<thead>` for the first (header) row and `<tbody>` for all data rows. **Never put the header row inside `<tbody>`.**
+
+**🚨 MANDATORY STRUCTURE:**
+```html
+<table>
+  <thead>
+    <tr>
+      <th>Column One</th>
+      <th>Column Two</th>
+      <th>Column Three</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Data A</td>
+      <td>Data B</td>
+      <td>Data C</td>
+    </tr>
+    <tr>
+      <td>Data D</td>
+      <td>Data E</td>
+      <td>Data F</td>
+    </tr>
+  </tbody>
+</table>
+```
+
+**🚨 RULES:**
+- ✅ First row ALWAYS goes inside `<thead>` with `<th>` cells (not `<td>`)
+- ✅ All remaining rows go inside `<tbody>` with `<td>` cells
+- ✅ `[ct]` inline code inside table cells (`<th>` or `<td>`) uses default styling
+- ❌ NEVER put the header row inside `<tbody>`
+- ❌ NEVER use `<td>` for header cells — always use `<th>` in `<thead>`
+- ❌ NEVER omit `<thead>` and `<tbody>` — bare `<tr>` rows inside `<table>` are not allowed
 
 ---
 
@@ -846,6 +898,11 @@ Before finalizing output, verify:
 - [ ] Indentation uses `&nbsp;` for proper vertical alignment
 - [ ] All spans inline (no actual newlines in HTML source)
 
+**Tables:**
+- [ ] 🚨 Every table's first row is wrapped in `<thead>` with `<th>` cells — never `<td>`
+- [ ] All data rows are wrapped in `<tbody>` with `<td>` cells
+- [ ] No bare `<tr>` rows directly inside `<table>` — always use `<thead>`/`<tbody>`
+
 **Inline Code & Text:**
 - [ ] Confluence inline code uses `<code>` tag with the standard class attribute
 - [ ] `[ct]` shortcode converts to `<span>` with Geist Mono styling and `font-size: 15px` (applies to sentences and table cells)
@@ -921,7 +978,7 @@ export default defineConfig({
 6. ❌ Adding extra spacing, margins, or padding styles
 
 **ONLY ALLOWED:**
-1. ✅ Standard HTML tags: `<p>`, `<ul>`, `<li>`, `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<table>`, `<code>`, `<strong>`, `<em>`, `<a>`
+1. ✅ Standard HTML tags: `<p>`, `<ul>`, `<li>`, `<h1>`, `<h2>`, `<h3>`, `<h4>`, `<table>`, `<thead>`, `<tbody>`, `<tr>`, `<th>`, `<td>`, `<code>`, `<strong>`, `<em>`, `<a>` — **tables MUST use `<thead>`/`<tbody>` structure with `<th>` for header cells**
 2. ✅ Data attributes: `data-renderer-start-pos`, `data-local-id`, `data-renderer-mark`, `data-indent-level`
 3. ✅ Standard classes from examples (link classes, `ak-ul`, code classes)
 4. ✅ WordPress shortcodes: `[code_light]`, `[tips_banner]`, `[info_banner]`, `[notice_block]`, `[tip_block]`, `[cta_regular]`, `[faq_item]`
