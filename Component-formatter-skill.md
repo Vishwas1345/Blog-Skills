@@ -376,6 +376,23 @@ npm init playwright@latest
 - Make sure to detect ANY multi-line code syntax, not just the examples above
 - **Context Awareness:** Ensure the code block is preceded by a filename or suitable description.
 
+### Syntax highlight palette (HTML skill)
+
+The HTML skill applies these token colors inside `[code_light]` (Geist Mono, weight 300). **Do not invent other hex values** for code tokens.
+
+| Role | Hex |
+|------|-----|
+| Keyword | `#cf222e` |
+| String | `#0a3069` |
+| Function / method | `#0550ae` |
+| Number / constant | `#953800` |
+| Type / class name | `#6639ba` |
+| Comment | `#6e7781` |
+| Variable / text (incl. punctuation) | `#24292f` |
+| Code block background (`<pre>`) | `#ffffff` |
+
+**Terminal blocks** (`title="terminal"`): background `#ffffff`; every token foreground `#000000` (no colored syntax).
+
 ---
 
 ### 2. Tip Marker (ALWAYS REQUIRED FOR TIPS)
@@ -447,18 +464,12 @@ PREREQUISITE: You need Node.js 18+ and npm installed on your system.
 
 **Format:**
 ```
-<<<<<<< HEAD
-Inside FAQ Item: [faq_item question="Question text here?" answer="Answer text here."] [/faq_item]
+Inside FAQ Item: [faq_item question="Question text here?"]Answer text here.[/faq_item]
 ```
 
 **Rules:**
 - Do NOT add an `open` attribute — omit it entirely
 
-=======
-Inside FAQ Item: [faq_item question="Question text here?"]answer="Answer text here. [/faq_item]
-```
-
->>>>>>> aefb32aca6e247e9a03dad384493f2620e28d684
 ---
 
 ## OPTIONAL COMPONENTS (ONLY IF USER REQUESTS)
@@ -597,15 +608,9 @@ Always clean up test data after your tests run. Use [ct]afterEach[/ct] hooks to 
 
 <h2>FAQs</h2>
 
-<<<<<<< HEAD
-Inside FAQ Item: [faq_item question="Can Playwright test GraphQL APIs?" answer="Yes, Playwright can test GraphQL APIs. Send POST requests with your GraphQL query in the request body."] [/faq_item]
+Inside FAQ Item: [faq_item question="Can Playwright test GraphQL APIs?"]Yes, Playwright can test GraphQL APIs. Send POST requests with your GraphQL query in the request body.[/faq_item]
 
-Inside FAQ Item: [faq_item question="How do I test file uploads with Playwright API?" answer="Use the multipart option in your POST request."] [/faq_item]
-=======
-Inside FAQ Item: [faq_item question="Can Playwright test GraphQL APIs?"] Yes, Playwright can test GraphQL APIs. Send POST requests with your GraphQL query in the request body. [/faq_item]
-
-Inside FAQ Item: [faq_item open="No" question="How do I test file uploads with Playwright API?"] Use the multipart option in your POST request. [/faq_item]
->>>>>>> aefb32aca6e247e9a03dad384493f2620e28d684
+Inside FAQ Item: [faq_item question="How do I test file uploads with Playwright API?"]Use the multipart option in your POST request.[/faq_item]
 ```
 
 **Note:** The `[ct]afterEach[/ct]` wraps inline code within a sentence. This will be converted to a styled span in the HTML skill.

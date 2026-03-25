@@ -167,16 +167,30 @@ font-family: 'Geist Mono'; font-weight: 300;
 
 > **🚨 TERMINAL EXCEPTION:** The color table below applies ONLY to code files (`.ts`, `.js`, `.yml`, `.json`, etc.). For `title="terminal"` blocks, ALL tokens use `#000000` (black) — see the Terminal/CLI Exception Rule below.
 
-| Token Type | Color | Hex Code | Examples |
-|------------|-------|----------|----------|
-| **Keywords** | Red | `#cf222e` | `import`, `export`, `const`, `let`, `var`, `await`, `async`, `function`, `return`, `if`, `else`, `for`, `default`, `from`, `true`, `false` |
-| **Functions/Methods** | Blue | `#0550ae` | `defineConfig()`, `launch()`, `test()`, `expect()`, `console.log()` |
-| **Strings** | Dark Blue | `#0a3069` | `'text'`, `"text"`, `` `template` `` |
-| **Properties/Variables** | Dark | `#24292f` | `trace`, `use`, `timeout`, `baseURL`, object keys |
-| **Punctuation/Operators** | Dark | `#24292f` | `{`, `}`, `(`, `)`, `[`, `]`, `:`, `;`, `,`, `=`, `=>`, `.` |
-| **Comments** | Gray | `#6e7781` | `// comment`, `/* comment */` |
-| **Numbers/Constants** | Brown | `#953800` | `100`, `3000`, `0` |
-| **Types/Classes** | Purple | `#6639ba` | `string`, `number`, `boolean`, `Promise`, `Array`, class names |
+**Canonical palette (use these hex values only for code tokens):**
+
+| Role | Hex |
+|------|-----|
+| Keyword | `#cf222e` |
+| String | `#0a3069` |
+| Function / method | `#0550ae` |
+| Number / constant | `#953800` |
+| Type / class name | `#6639ba` |
+| Comment | `#6e7781` |
+| Variable / text | `#24292f` |
+| Background (code block) | `#ffffff` |
+
+| Token Type | Hex | Examples |
+|------------|-----|----------|
+| **Keyword** | `#cf222e` | `import`, `export`, `const`, `let`, `var`, `await`, `async`, `function`, `return`, `if`, `else`, `for`, `default`, `from`, `true`, `false` |
+| **Function / method** | `#0550ae` | `defineConfig()`, `launch()`, `test()`, `expect()`, `console.log()` |
+| **String** | `#0a3069` | `'text'`, `"text"`, `` `template` `` |
+| **Variable / text** | `#24292f` | Identifiers, properties, object keys, punctuation, operators: `{` `}` `(` `)` `[` `]` `:` `;` `,` `=` `=>` `.` |
+| **Comment** | `#6e7781` | `// comment`, `/* comment */` |
+| **Number / constant** | `#953800` | `100`, `3000`, `0` |
+| **Type / class name** | `#6639ba` | `string`, `number`, `boolean`, `Promise`, `Array`, class names |
+
+**Code block background:** Every `<pre>` inside `[code_light]` MUST include `style="background-color: #ffffff;"` (in addition to any padding the theme adds). Terminal blocks (`title="terminal"`) use the same white background; only token **foreground** is `#000000`.
 
 #### 🚨 SPACING & INDENTATION (CRITICAL)
 - **Spaces:** Use `&nbsp;` for ALL spaces inside `<pre><code>`.
@@ -737,11 +751,8 @@ Try TestDino Free
 [faq_item question="Another question?"]Answer text[/faq_item]
 ```
 
-<<<<<<< HEAD
 - Do NOT add an `open` attribute — omit it entirely
 
-=======
->>>>>>> aefb32aca6e247e9a03dad384493f2620e28d684
 ---
 
 ## CTA DETECTION PATTERNS

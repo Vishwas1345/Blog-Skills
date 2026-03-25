@@ -820,10 +820,12 @@ Content...
 **Use for:** All code snippets, terminal commands, configuration files
 ```
 [code_light title="filename.js"]
-<pre><code>// Your code here
+<pre style="background-color: #ffffff;"><code>// Your code here
 const example = "code";</code></pre>
 [/code_light]
 ```
+
+**Syntax colors (for final HTML output):** Keyword `#cf222e`, String `#0a3069`, Function/method `#0550ae`, Number/constant `#953800`, Type/class `#6639ba`, Comment `#6e7781`, Variable/text `#24292f`, background `#ffffff`. Terminal blocks: all tokens `#000000` on `#ffffff`.
 
 **Title examples:** `mcp.json`, `Terminal`, `playwright.config.ts`, `Installation`
 
