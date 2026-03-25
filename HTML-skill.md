@@ -229,11 +229,7 @@ npm init playwright@latest
 **Output:**
 ```html
 [code_light title="terminal"]
-<<<<<<< HEAD
 <pre><code><span style="color: #000000; font-family: 'Geist Mono'; font-weight: 300;">npm</span><span style="color: #000000; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #000000; font-family: 'Geist Mono'; font-weight: 300;">init</span><span style="color: #000000; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #000000; font-family: 'Geist Mono'; font-weight: 300;">playwright@latest</span></code></pre>
-=======
-<pre><code><span style="color: #0550ae; font-family: 'Geist Mono'; font-weight: 300;">npm</span><span style="color: #24292f; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #24292f; font-family: 'Geist Mono'; font-weight: 300;">init</span><span style="color: #24292f; font-family: 'Geist Mono'; font-weight: 300;">&nbsp;</span><span style="color: #0a3069; font-family: 'Geist Mono'; font-weight: 300;">playwright@latest</span></code></pre>
->>>>>>> 7dd3af2ebe53f90718c04ab785802e9ac41167e6
 [/code_light]
 ```
 
