@@ -818,14 +818,17 @@ Content...
 
 #### 4. Code Light (ALWAYS REQUIRED FOR CODE)
 **Use for:** All code snippets, terminal commands, configuration files
+
+**🚨 `[code_light]` HTML:** Inside the shortcode use **only** bare `<pre><code>…</code></pre>` — **no** `style`, `class`, or other attributes on `<pre>` or `<code>` (no `background-color` / `#ffffff`). Full rules and syntax-highlighted `<span>` patterns are in **HTML-skill.md**.
+
 ```
 [code_light title="filename.js"]
-<pre style="background-color: #ffffff;"><code>// Your code here
+<pre><code>// Your code here
 const example = "code";</code></pre>
 [/code_light]
 ```
 
-**Syntax colors (for final HTML output):** Keyword `#cf222e`, String `#0a3069`, Function/method `#0550ae`, Number/constant `#953800`, Type/class `#6639ba`, Comment `#6e7781`, Variable/text `#24292f`, background `#ffffff`. Terminal blocks: all tokens `#000000` on `#ffffff`.
+**Syntax colors (for final HTML output — apply on `<span>` tokens only):** Keyword `#cf222e`, String `#0a3069`, Function/method `#0550ae`, Number/constant `#953800`, Type/class `#6639ba`, Comment `#6e7781`, Variable/text `#24292f`. **Do not** set background (including `#ffffff`) on `<pre>` or `<code>` inside `[code_light]`. Terminal blocks: all token foregrounds `#000000`.
 
 **Title examples:** `mcp.json`, `Terminal`, `playwright.config.ts`, `Installation`
 

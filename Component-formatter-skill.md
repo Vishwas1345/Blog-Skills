@@ -70,6 +70,8 @@ npm install playwright
 [/code_light]
 ```
 
+**🚨 `[code_light]` → HTML (when HTML-skill runs):** Inside `[code_light]`, output **only** bare `<pre><code>…</code></pre>`. **Never** add `style`, `class`, or any attribute to `<pre>` or `<code>` (including `background-color` / `#ffffff`). Syntax highlighting belongs on inner `<span>` elements per **HTML-skill.md**.
+
 **🚨 CODE CONTEXT RULE (CRITICAL):** Every `[code_light]` block MUST be preceded by a **practical file name** (e.g., `playwright.config.ts`, `auth-setup.ts`) or a suitable heading that indicates where the code is executed. **NEVER** use generic names or actions (like "Code Snippet" or "Updating Logic") as the primary identifier. If it's a test snippet, always provide a spec file name (e.g., `login.spec.ts`). If the original content lacks this context, you MUST identify the correct file name and add it as a bold label or small heading immediately before the code light.
 
 ---
@@ -389,9 +391,10 @@ The HTML skill applies these token colors inside `[code_light]` (Geist Mono, wei
 | Type / class name | `#6639ba` |
 | Comment | `#6e7781` |
 | Variable / text (incl. punctuation) | `#24292f` |
-| Code block background (`<pre>`) | `#ffffff` |
 
-**Terminal blocks** (`title="terminal"`): background `#ffffff`; every token foreground `#000000` (no colored syntax).
+**`<pre>` / `<code>`:** No styling or background on these tags — bare wrappers only (see **HTML-skill.md**).
+
+**Terminal blocks** (`title="terminal"`): every token foreground `#000000` (no colored syntax); block chrome is still theme/shortcode, not inline on `<pre>`.
 
 ---
 

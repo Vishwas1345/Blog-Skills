@@ -128,13 +128,19 @@ When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag with
 ### Standard Code Block
 Wrap all multi-line code in `[code_light]` shortcode with syntax-highlighted `<pre><code>`:
 
+**🚨 STRICT — `<pre>` and `<code>` inside `[code_light]` (non-negotiable):**
+- **Never** add `style`, `class`, `id`, `data-*`, or any other attribute to `<pre>` or `<code>` in a code light block.
+- Use **exactly** `<pre><code>…</code></pre>` — bare tags only. **Do not** set `background-color`, including `#ffffff`; the theme / `[code_light]` wrapper owns block chrome.
+- **Never** wrap the block background on `<pre>`; keep wrappers minimal so the shortcode and site CSS control appearance.
+- All syntax highlighting lives **only** on inner `<span>` elements (and `<br>` / `&nbsp;` as specified below).
+
 ```html
 [code_light title="filename.ext"]
 <pre><code>// code here with full syntax highlighting in colored <span> tags</code></pre>
 [/code_light]
+```
 
 **🚨 MANDATORY TITLE:** The `title` attribute in `[code_light]` is REQUIRED. **ALWAYS** use a practical file name. If it's a test snippet, use `.spec.ts` or `.spec.js`. **NEVER** use generic action names or random labels. Use names like `playwright.config.ts`, `example.spec.ts`, or `terminal`.
-```
 
 ### Code Light Title Guidelines
 
@@ -178,7 +184,6 @@ font-family: 'Geist Mono'; font-weight: 300;
 | Type / class name | `#6639ba` |
 | Comment | `#6e7781` |
 | Variable / text | `#24292f` |
-| Background (code block) | `#ffffff` |
 
 | Token Type | Hex | Examples |
 |------------|-----|----------|
@@ -190,7 +195,7 @@ font-family: 'Geist Mono'; font-weight: 300;
 | **Number / constant** | `#953800` | `100`, `3000`, `0` |
 | **Type / class name** | `#6639ba` | `string`, `number`, `boolean`, `Promise`, `Array`, class names |
 
-**Code block background:** Every `<pre>` inside `[code_light]` MUST include `style="background-color: #ffffff;"` (in addition to any padding the theme adds). Terminal blocks (`title="terminal"`) use the same white background; only token **foreground** is `#000000`.
+**Code block chrome:** Do **not** style `<pre>` or `<code>` (see strict rules above). Background and padding come from the WordPress theme / `[code_light]` shortcode, not inline on `<pre>`. For `title="terminal"`, all token **foreground** in `<span>`s is still `#000000`.
 
 #### 🚨 SPACING & INDENTATION (CRITICAL)
 - **Spaces:** Use `&nbsp;` for ALL spaces inside `<pre><code>`.
@@ -199,7 +204,7 @@ font-family: 'Geist Mono'; font-weight: 300;
 - **Line breaks:** Use `<br>` at the end of each line inside the code block.
 
 #### Structure Rules
-1. Wrap entire code in `<pre><code>...</code></pre>`
+1. Wrap entire code in `<pre><code>...</code></pre>` with **no attributes** on `<pre>` or `<code>`
 2. Each token gets its own `<span>` with color and font styles
 3. All spans should be inline (no actual newlines in the HTML source)
 4. Use `<br>` to create visual line breaks
