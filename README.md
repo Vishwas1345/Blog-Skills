@@ -10,7 +10,8 @@ Blog-Skills is a small collection of markdown "skill" documents that provide tem
 
 - [Component formatter skill](https://github.com/Vishwas1345/Blog-Skills/blob/main/Component-formatter-skill.md) — Tools and templates to format UI components or code snippets consistently for blog posts.
 - [Content skill](https://github.com/Vishwas1345/Blog-Skills/blob/main/Content-skill.md) — Guidance and templates for generating and structuring blog content (outlines, sections, SEO metadata).
-- [HTML skill](https://github.com/Vishwas1345/Blog-Skills/blob/main/HTML-skill.md) — HTML/templating helpers and examples for converting content into web-ready markup.
+- [HTML skill](https://github.com/Vishwas1345/Blog-Skills/blob/main/HTML-skill.md) — HTML/templating helpers and examples for converting content into web-ready markup. Inside `[code_light]`, use bare `<pre><code>` only (no attributes or background on those tags); see HTML skill for the full rule.
+- [WordPress rule](https://github.com/Vishwas1345/Blog-Skills/blob/main/wordpress-rule.md) — Complete publishing rule book for AI agents. Covers post settings, heading hierarchy, SEO, featured images, code blocks, inline code, links, CTAs, and a pre-publish checklist.
 
 > Repository: [Vishwas1345/Blog-Skills](https://github.com/Vishwas1345/Blog-Skills)
 
