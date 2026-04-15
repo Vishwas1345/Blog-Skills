@@ -108,6 +108,13 @@ When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag with
 - Background: `bg-[#171717]` (white)
 - Text color: `text-[#713F12]` (dark brown, matches Tip text color)
 
+**Inside Warning Notice Block:**
+```html
+<span class="text-[#92400E] ff-geist-mono bg-[#FFFFFF] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">code text</span>
+```
+- Background: `bg-[#FFFFFF]` (white)
+- Text color: `text-[#92400E]` (dark amber, matches Warning text color)
+
 **Examples (Default):**
 - `[ct]npx playwright test[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">npx playwright test</span>`
 - `[ct].github/workflows/playwright.yml[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">.github/workflows/playwright.yml</span>`
@@ -117,7 +124,7 @@ When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag with
 **When to use which:**
 - Use `<code>` tag for Confluence-sourced inline code
 - Use `<span>` tag for `[ct]` shortcode from component formatter
-- **Apply context-aware styling** when `[ct]` appears inside Tip or Note notice blocks
+- **Apply context-aware styling** when `[ct]` appears inside Tip, Note, or Warning notice blocks
 
 ---
 
@@ -701,6 +708,79 @@ NOTE: Note content here. [ct]npx playwright test[/ct]
 - ALWAYS use `icon=""` (empty string - NO icon for notes)
 - Notes use GREEN theme, Tips use YELLOW theme - completely different styling
 
+### 🚨 Warning Conversion (AUTOMATIC - FROM COMPONENT FORMATTER)
+
+**When component formatter outputs `[warning]...[/warning]`, convert to notice_block with amber warning styling:**
+
+**Format:**
+```html
+[notice_block bg="#FEF3C7" border="#FCD34D" color="#92400E" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]<strong>Warning:</strong> Warning content here.[/notice_block]
+```
+
+**🚨 CRITICAL STYLING - AMBER THEME WITH WARNING ICON:**
+- Background: `bg="#FEF3C7"` (light amber)
+- Border: `border="#FCD34D"` (amber)
+- Text color: `color="#92400E"` (dark amber)
+- Icon: `icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"` (warning icon)
+
+**🚨 DO NOT CONFUSE WITH TIPS OR NOTES:**
+- **TIPS**: Yellow theme (`#FEFCE8`, `#FDE68A`, `#713F12`) with sparkle icon
+- **NOTES**: Green theme (`#E1FFF0`, `#A7F3D0`, `#065F46`) with NO icon
+- **WARNINGS**: Amber theme (`#FEF3C7`, `#FCD34D`, `#92400E`) with warning icon
+
+**Examples:**
+
+**Input from component formatter:**
+```
+Inside Warning: [warning]
+WARNING: Video recordings may capture sensitive data visible in the browser. Treat video artifacts with the same access controls you apply to your application logs.
+[/warning]
+```
+
+**Output HTML:**
+```html
+[notice_block bg="#FEF3C7" border="#FCD34D" color="#92400E" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]<strong>Warning:</strong> Video recordings may capture sensitive data visible in the browser. Treat video artifacts with the same access controls you apply to your application logs.[/notice_block]
+```
+
+**Another Example:**
+
+**Input:**
+```
+Inside Warning: [warning]
+CAUTION: Running all tests with video recording enabled can consume significant disk space in CI.
+[/warning]
+```
+
+**Output:**
+```html
+[notice_block bg="#FEF3C7" border="#FCD34D" color="#92400E" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]<strong>Caution:</strong> Running all tests with video recording enabled can consume significant disk space in CI.[/notice_block]
+```
+
+**Example with Inline Code `[ct]`:**
+
+**Input:**
+```
+Inside Warning: [warning]
+WARNING: Never use [ct]video: 'on'[/ct] in production CI pipelines.
+[/warning]
+```
+
+**Output:**
+```html
+[notice_block bg="#FEF3C7" border="#FCD34D" color="#92400E" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]<strong>Warning:</strong> Never use <span class="text-[#92400E] ff-geist-mono bg-[#FFFFFF] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">video: 'on'</span> in production CI pipelines.[/notice_block]
+```
+
+**🚨 CRITICAL FOR WARNINGS WITH INLINE CODE:**
+- When `[ct]` appears inside Warning notice blocks, use `bg-[#FFFFFF]` (white) and `text-[#92400E]` (dark amber)
+- This ensures the inline code stands out against the amber Warning background
+
+**🚨 IMPORTANT:**
+- **BOLD the prefix** using `<strong>` tag (e.g., `<strong>Warning:</strong>`, `<strong>Caution:</strong>`)
+- Convert prefix to title case (WARNING: → Warning:, CAUTION: → Caution:)
+- Use EXACT color values provided above (amber theme)
+- Use the specific warning icon URL (`fi_768818.svg`)
+- Warnings use AMBER theme, Tips use YELLOW theme, Notes use GREEN theme - all completely different styling
+
 ### Tip Block (DEPRECATED - Use tips_banner instead)
 
 **⚠️ NOTE:** For definitions and term explanations, use `[tips_banner]` with blue theme instead.
@@ -923,9 +1003,10 @@ Before finalizing output, verify:
 - [ ] Confluence inline code uses `<code>` tag with the standard class attribute
 - [ ] `[ct]` shortcode converts to `<span>` with Geist Mono styling and `font-size: 15px` (applies to sentences and table cells)
 - [ ] 🚨 `[ct]` uses context-aware styling:
-  - [ ] Default (outside Tip/Note): `bg-[#E9E9E9]` and `text-[#0B0C0E]`
+  - [ ] Default (outside Tip/Note/Warning): `bg-[#E9E9E9]` and `text-[#0B0C0E]`
   - [ ] Inside Note notice blocks: `bg-[#FDFFFE]` and `text-[#065F46]`
   - [ ] Inside Tip notice blocks: `bg-[#FFFFFF]` and `text-[#713F12]`
+  - [ ] Inside Warning notice blocks: `bg-[#FFFFFF]` and `text-[#92400E]`
 - [ ] Bold text uses `<strong data-renderer-mark="true">`
 - [ ] All links have full class attribute string
 - [ ] NO custom classes or CSS added (only standard tags and example-based classes)
@@ -937,6 +1018,7 @@ Before finalizing output, verify:
 - [ ] TL;DR kept as `[tips_banner]` with yellow styling (title="TL;DR", bg="#FEFCE8", border="#FDE68A", color="#713F12")
 - [ ] Tips (`[tip]`) converted to `[notice_block]` with yellow styling (bg="#FEFCE8", border="#FDE68A", color="#713F12", icon=sparkle)
 - [ ] Notes (`[note]`) converted to `[notice_block]` with green styling (bg="#E1FFF0", border="#A7F3D0", color="#065F46", icon="")
+- [ ] Warnings (`[warning]`) converted to `[notice_block]` with amber styling (bg="#FEF3C7", border="#FCD34D", color="#92400E", icon=warning)
 - [ ] Global `<style>` tag included at top of document for automatic image box-shadow
 - [ ] Images use simple `<img>` tags without inline box-shadow styles (handled by global style)
 
@@ -1002,8 +1084,9 @@ export default defineConfig({
 6. ✅ Global `<style>` tag for image box-shadow (automatically applies to all images - no inline styles needed)
 7. ✅ `[tip]` markers automatically convert to `[notice_block]` with yellow theme and sparkle icon (bg="#FEFCE8")
 8. ✅ `[note]` markers automatically convert to `[notice_block]` with green theme and NO icon (bg="#E1FFF0", icon="")
-9. ✅ `[tips_banner]` with "TL;DR" title kept as-is with yellow theme (bg="#FEFCE8", border="#FDE68A", color="#713F12")
-10. ✅ `[tips_banner]` with "What is X?" title kept as-is with blue theme (bg="#DBEAFE", border="#BFDBFE", color="#1E3A8A")
+9. ✅ `[warning]` markers automatically convert to `[notice_block]` with amber theme and warning icon (bg="#FEF3C7", icon=fi_768818.svg)
+10. ✅ `[tips_banner]` with "TL;DR" title kept as-is with yellow theme (bg="#FEFCE8", border="#FDE68A", color="#713F12")
+11. ✅ `[tips_banner]` with "What is X?" title kept as-is with blue theme (bg="#DBEAFE", border="#BFDBFE", color="#1E3A8A")
 
 **HTML STRUCTURE RULES:**
 - Use clean, minimal HTML structure

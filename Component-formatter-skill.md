@@ -142,6 +142,7 @@ All other rows → <tbody> with <td> cells
 - ✅ `[tips_banner]` – Required when content contains "TL;DR" (see TL;DR Detection Rules below)
 - ✅ `[tip]` – Required when content contains tip patterns (see Tip Detection Rules below)
 - ✅ `[note]` – Required when content contains "NOTE:" or "Note:" (see Note Detection Rules below)
+- ✅ `[warning]` – Required when content contains warning patterns (see Warning Detection Rules below)
 
 **NEVER add these components unless user explicitly requests:**
 - ❌ `[info_banner]` – Only if user explicitly requests
@@ -234,6 +235,52 @@ PREREQUISITE: You need Node.js 18+ and npm installed on your system.
 **When to use which:**
 - Use `[tip]` for: TIP:, PRO TIP:, BEST PRACTICE:, REMEMBER:
 - Use `[note]` for: NOTE:, IMPORTANT:, PREREQUISITE:
+- Use `[warning]` for: WARNING:, CAUTION:
+
+---
+
+### 🚨 Warning Detection Rules (AUTOMATIC)
+
+**When to add `[warning]` marker:**
+Automatically detect and wrap warnings when content contains these patterns:
+- ✅ Starts with "WARNING:" or "Warning:"
+- ✅ Starts with "CAUTION:" or "Caution:"
+
+**Format:**
+```
+Inside Warning: [warning]
+WARNING: Your warning content here.
+[/warning]
+```
+
+**Examples:**
+```
+Inside Warning: [warning]
+WARNING: Video recordings may capture sensitive data visible in the browser. Treat video artifacts with the same access controls you apply to your application logs.
+[/warning]
+```
+
+```
+Inside Warning: [warning]
+CAUTION: Running all tests with video recording enabled can consume significant disk space in CI.
+[/warning]
+```
+
+**🚨 IMPORTANT - DO NOT CONFUSE WARNINGS WITH TIPS OR NOTES:**
+- The warning marker `[warning]` is REQUIRED whenever you detect a warning pattern
+- Keep the "WARNING:" or "CAUTION:" prefix in the content - don't remove it
+- Wrap the entire warning paragraph, including the prefix
+- This is NOT optional - warnings must always be marked
+
+**🚨 CRITICAL DIFFERENCE BETWEEN TIPS, NOTES, AND WARNINGS:**
+- **TIPS** (`[tip]`): Yellow theme with sparkle icon in HTML
+  - HTML: `[notice_block bg="#FEFCE8" border="#FDE68A" color="#713F12" icon="...fluent_info-sparkle-48-filled.svg"]`
+  - Inline code `[ct]` inside tips MUST use `bg-[#FFFFFF]` and `text-[#713F12]`
+- **NOTES** (`[note]`): Green theme with NO icon in HTML
+  - HTML: `[notice_block bg="#E1FFF0" border="#A7F3D0" color="#065F46" icon=""]`
+- **WARNINGS** (`[warning]`): Amber theme with warning icon in HTML
+  - HTML: `[notice_block bg="#FEF3C7" border="#FCD34D" color="#92400E" icon="...fi_768818.svg"]`
+  - Inline code `[ct]` inside warnings MUST use `bg-[#FFFFFF]` and `text-[#92400E]`
 
 ---
 
@@ -661,6 +708,7 @@ Before finalizing output, verify:
 - [ ] All multi-line code blocks wrapped with `Inside Code Light:` marker
 - [ ] All tips (TIP:, PRO TIP:, etc.) wrapped with `Inside Tip:` marker
 - [ ] All notes (NOTE:, IMPORTANT:, PREREQUISITE:) wrapped with `Inside Note:` marker
+- [ ] All warnings (WARNING:, CAUTION:) wrapped with `Inside Warning:` marker
 - [ ] All FAQs use `Inside FAQ Item:` format
 - [ ] First FAQ has `open="Yes"`, others have `open="No"`
 
