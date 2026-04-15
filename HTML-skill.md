@@ -450,7 +450,7 @@ These are rows above the first category header — pricing, "best for", ratings,
   <td colspan="TOTAL_COLUMNS" class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px]">
     <div class="flex justify-between items-center">
       <span>Category Name</span>
-      <svg class="chevron-icon w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+      <svg class="chevron-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
     </div>
   </td>
 </tr>
@@ -465,7 +465,7 @@ These are rows above the first category header — pricing, "best for", ratings,
 </tr>
 ```
 
-**🚨 DO NOT use `style="display: none;"`** on sub-feature rows. The CSS handles the collapsed state by setting `max-height: 0`, `padding: 0`, and `opacity: 0` on the `<td>` cells. When the `.open` class is toggled, CSS transitions smoothly animate these properties.
+**🚨 DO NOT use `style="display: none;"`** on sub-feature rows. The CSS handles the collapsed state by setting `max-height: 0`, `padding: 0 !important`, `opacity: 0`, `line-height: 0`, and `font-size: 0` on the `<td>` cells. When the `.open` class is toggled, CSS transitions smoothly animate these properties. The `!important` on padding is required to override Tailwind utility padding classes.
 
 **🚨 IMPORTANT:** In sub-feature rows, the **first `<td>`** (the row label column) uses `font-[500]` and class `lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]`. The remaining `<td>` cells (data columns) use `font-normal` and class `px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]`.
 
@@ -474,25 +474,39 @@ If the table has a final row with CTA links ("Try for free", "Learn more"), it s
 
 ### CSS (add ONCE inside the accordion table `<style>` block)
 
-The smooth animation works by transitioning `max-height`, `opacity`, and `padding` on the `<td>` cells instead of toggling `display` on the `<tr>`. Table rows cannot be animated with CSS transitions on `display`, so the sub-feature rows stay as `display: table-row` at all times and instead collapse/expand via their cell content.
+The smooth animation works by transitioning `max-height`, `opacity`, `padding`, `line-height`, and `font-size` on the `<td>` cells instead of toggling `display` on the `<tr>`. Table rows cannot be animated with CSS transitions on `display`, so the sub-feature rows stay as `display: table-row` at all times and instead collapse/expand via their cell content. The `!important` on padding overrides Tailwind utility classes. The `font-size: 0` / `line-height: 0` in the collapsed state ensures text doesn't take up space, while the responsive media query adjusts font-size to `16px` on `md:` breakpoint. The `span` and `strong` rule ensures child elements inherit the animated font-size.
 
 ```html
 <style>
 .sub-feature td {
   max-height: 0;
   overflow: hidden;
-  padding-top: 0;
-  padding-bottom: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   opacity: 0;
   transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.25s ease;
   border-bottom-color: transparent;
+  line-height: 0;
+  font-size: 0;
 }
 .sub-feature.open td {
   max-height: 80px;
-  padding-top: 18px;
-  padding-bottom: 18px;
+  padding-top: 18px !important;
+  padding-bottom: 18px !important;
   opacity: 1;
   border-bottom-color: #F5F5F5;
+  line-height: 24px;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .sub-feature.open td {
+    font-size: 16px;
+  }
+}
+.sub-feature td span,
+.sub-feature td strong {
+  transition: font-size 0.3s ease;
+  font-size: inherit;
 }
 .chevron-icon {
   transition: transform 0.3s ease;
@@ -500,7 +514,7 @@ The smooth animation works by transitioning `max-height`, `opacity`, and `paddin
 </style>
 ```
 
-**🚨 CRITICAL CHANGE FROM INSTANT TOGGLE:** Sub-feature rows are **NOT** set to `display: none` anymore. Instead they always remain `display: table-row` but start **collapsed** (zero height/padding/opacity). The `.open` class is toggled to expand them smoothly.
+**🚨 CRITICAL CHANGE FROM INSTANT TOGGLE:** Sub-feature rows are **NOT** set to `display: none` anymore. Instead they always remain `display: table-row` but start **collapsed** (zero max-height/padding/opacity/line-height/font-size). The `.open` class is toggled to expand them smoothly. Padding uses `!important` to override Tailwind utilities.
 
 **Sub-feature rows now render as (no `style="display: none;"`):**
 ```html
@@ -569,18 +583,32 @@ Use ✅, ❌, and ⚠️ directly as text content in `<td>` cells — no special
 .sub-feature td {
   max-height: 0;
   overflow: hidden;
-  padding-top: 0;
-  padding-bottom: 0;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
   opacity: 0;
   transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.25s ease;
   border-bottom-color: transparent;
+  line-height: 0;
+  font-size: 0;
 }
 .sub-feature.open td {
   max-height: 80px;
-  padding-top: 18px;
-  padding-bottom: 18px;
+  padding-top: 18px !important;
+  padding-bottom: 18px !important;
   opacity: 1;
   border-bottom-color: #F5F5F5;
+  line-height: 24px;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .sub-feature.open td {
+    font-size: 16px;
+  }
+}
+.sub-feature td span,
+.sub-feature td strong {
+  transition: font-size 0.3s ease;
+  font-size: inherit;
 }
 .chevron-icon {
   transition: transform 0.3s ease;
@@ -614,7 +642,7 @@ Use ✅, ❌, and ⚠️ directly as text content in `<td>` cells — no special
 <td colspan="4" class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px]">
 <div class="flex justify-between items-center">
 <span>Getting Started</span>
-<svg class="chevron-icon w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+<svg class="chevron-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
 </div>
 </td>
 </tr>
@@ -635,7 +663,7 @@ Use ✅, ❌, and ⚠️ directly as text content in `<td>` cells — no special
 <td colspan="4" class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px]">
 <div class="flex justify-between items-center">
 <span>AI &amp; failure insights</span>
-<svg class="chevron-icon w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+<svg class="chevron-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
 </div>
 </td>
 </tr>
@@ -673,8 +701,8 @@ function toggleCategory(header) {
 2. **Header row:** Uses `<thead>` with `<th>` cells and `bg-[#FAFAFA]` background
 3. **Fixed summary rows:** Standard `<tr>` — always visible, bold label in first cell
 4. **Category headers:** `<tr class="category-header cursor-pointer">` with `colspan` spanning all columns, chevron SVG, and `onclick="toggleCategory(this)"`
-5. **Sub-feature rows:** `<tr class="sub-feature">` — collapsed via CSS (zero max-height/padding/opacity), NO `style="display: none;"`
-6. **CSS `<style>` block:** Include ONCE inside the wrapper `<div>`, before the `<table>` — handles smooth transitions on `max-height`, `padding`, `opacity`, and `border-bottom-color`
+5. **Sub-feature rows:** `<tr class="sub-feature">` — collapsed via CSS (zero max-height/padding/opacity/line-height/font-size), NO `style="display: none;"`
+6. **CSS `<style>` block:** Include ONCE inside the wrapper `<div>`, before the `<table>` — handles smooth transitions on `max-height`, `padding` (with `!important`), `opacity`, `border-bottom-color`, `line-height`, and `font-size`. Includes responsive `@media (min-width: 768px)` for font-size and a `.sub-feature td span, .sub-feature td strong` rule for inherited font-size transitions
 7. **JavaScript:** Include `toggleCategory` function ONCE after the closing `</div>` — toggles `.open` class (not display property)
 8. **CTA row:** If present, keep as a standard visible `<tr>` (not a sub-feature)
 9. **`colspan` value:** Must match the total number of columns in the table
@@ -1285,7 +1313,7 @@ Before finalizing output, verify:
 - [ ] 🚨 Every table's first row is wrapped in `<thead>` with `<th>` cells — never `<td>`
 - [ ] All data rows are wrapped in `<tbody>` with `<td>` cells
 - [ ] No bare `<tr>` rows directly inside `<table>` — always use `<thead>`/`<tbody>`
-- [ ] 🚨 `[accordion_table]` converted to accordion HTML: wrapper `<div>` with `<style>` block for smooth CSS transitions, category headers with `onclick="toggleCategory(this)"` and chevron SVG, sub-feature rows using `.sub-feature` class (NO `display: none`), and `<script>` with `toggleCategory` function that toggles `.open` class
+- [ ] 🚨 `[accordion_table]` converted to accordion HTML: wrapper `<div>` with `<style>` block for smooth CSS transitions (padding with `!important`, `line-height`, `font-size`, responsive `@media` query, `span`/`strong` font-size inherit rule), category headers with `onclick="toggleCategory(this)"` and chevron SVG, sub-feature rows using `.sub-feature` class (NO `display: none`), and `<script>` with `toggleCategory` function that toggles `.open` class
 
 **Inline Code & Text:**
 - [ ] Confluence inline code uses `<code>` tag with the standard class attribute
