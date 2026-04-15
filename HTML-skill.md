@@ -403,6 +403,222 @@ Every HTML table MUST use `<thead>` for the first (header) row and `<tbody>` for
 
 ---
 
+## 🚨 ACCORDION TABLE CONVERSION (FROM COMPONENT FORMATTER)
+
+**When component formatter outputs `[accordion_table]...[/accordion_table]`, convert the markdown table inside into an interactive accordion HTML table.**
+
+An accordion table has:
+- A **fixed top section** (always visible) — summary rows like pricing, "best for", star ratings
+- **Category header rows** — bold section names (e.g., "Getting Started", "AI & failure insights") that expand/collapse
+- **Sub-feature rows** — detail rows hidden by default, revealed when the category header is clicked
+
+### HTML Structure
+
+**Wrapper:**
+```html
+<div class="w-full rounded-[12px] border border-[#F5F5F5] overflow-hidden">
+<table class="w-full border-collapse">
+  <thead>...</thead>
+  <tbody>...</tbody>
+</table>
+</div>
+```
+
+**Header row (`<thead>`):**
+```html
+<thead>
+<tr>
+  <th class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px] bg-[#FAFAFA]">Column Name</th>
+  <!-- repeat for each column -->
+</tr>
+</thead>
+```
+
+**Fixed summary rows (always visible, NOT collapsible):**
+These are rows above the first category header — pricing, "best for", ratings, etc. They use standard `<tr>` with no special class:
+```html
+<tr>
+  <td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"><strong>Pricing (starts at)</strong></td>
+  <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">$49/month</td>
+  <!-- repeat for each column -->
+</tr>
+```
+
+**Category header row (expandable/collapsible toggle):**
+```html
+<tr class="category-header cursor-pointer" onclick="toggleCategory(this)">
+  <td colspan="TOTAL_COLUMNS" class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px]">
+    <div class="flex justify-between items-center">
+      <span>Category Name</span>
+      <svg class="chevron-icon w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+    </div>
+  </td>
+</tr>
+```
+
+**Sub-feature rows (hidden by default, shown on toggle):**
+```html
+<tr class="sub-feature table-row" style="display: none;">
+  <td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
+  <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Feature value</td>
+  <!-- repeat for each column -->
+</tr>
+```
+
+**🚨 IMPORTANT:** In sub-feature rows, the **first `<td>`** (the row label column) uses `font-[500]` and class `lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]`. The remaining `<td>` cells (data columns) use `font-normal` and class `px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]`.
+
+**CTA / last row (always visible):**
+If the table has a final row with CTA links ("Try for free", "Learn more"), it stays visible — do NOT make it a sub-feature. Use standard `<tr>` with `<td>` containing `<a>` links.
+
+### JavaScript (add ONCE at the end of the accordion table)
+
+```html
+<script>
+function toggleCategory(header) {
+  const chevron = header.querySelector('.chevron-icon');
+  let next = header.nextElementSibling;
+  const isExpanding = next && next.style.display === 'none';
+  while (next && next.classList.contains('sub-feature')) {
+    next.style.display = isExpanding ? 'table-row' : 'none';
+    next = next.nextElementSibling;
+  }
+  chevron.style.transform = isExpanding ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+</script>
+```
+
+### Inline Code in Accordion Tables
+
+Any `[ct]` shortcode inside table cells uses the **default** inline code styling (same as regular tables):
+```html
+<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px; padding-right: 5px; font-size: 15px;">code text</span>
+```
+
+### Emoji/Icon Cells
+
+Use ✅, ❌, and ⚠️ directly as text content in `<td>` cells — no special wrapping needed.
+
+### Complete Example
+
+**Input from component formatter:**
+```
+[accordion_table]
+
+| | Product A | Product B | Product C |
+| --- | --- | --- | --- |
+| **Pricing (starts at)** | $49/month | $599/month | $199/month |
+| **Best for** | Reporting | Dashboards | Analytics |
+| **Getting Started** | | | |
+| Onboarding Time | Quick setup | Slower | Quick setup |
+| Setup Complexity | Simple | Manual | Complex |
+| **AI & failure insights** | | | |
+| AI root-cause analysis | ✅ | ❌ | ✅ |
+
+[/accordion_table]
+```
+
+**Output HTML:**
+```html
+<div class="w-full rounded-[12px] border border-[#F5F5F5] overflow-hidden">
+<table class="w-full border-collapse">
+<thead>
+<tr>
+<th class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px] bg-[#FAFAFA]"></th>
+<th class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px] bg-[#FAFAFA]">Product A</th>
+<th class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px] bg-[#FAFAFA]">Product B</th>
+<th class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px] bg-[#FAFAFA]">Product C</th>
+</tr>
+</thead>
+<tbody>
+<!-- Fixed summary rows (always visible) -->
+<tr>
+<td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"><strong>Pricing (starts at)</strong></td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">$49/month</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">$599/month</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">$199/month</td>
+</tr>
+<tr>
+<td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"><strong>Best for</strong></td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Reporting</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Dashboards</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Analytics</td>
+</tr>
+<!-- Category: Getting Started -->
+<tr class="category-header cursor-pointer" onclick="toggleCategory(this)">
+<td colspan="4" class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px]">
+<div class="flex justify-between items-center">
+<span>Getting Started</span>
+<svg class="chevron-icon w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+</div>
+</td>
+</tr>
+<tr class="sub-feature table-row" style="display: none;">
+<td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Quick setup</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Slower</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Quick setup</td>
+</tr>
+<tr class="sub-feature table-row" style="display: none;">
+<td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Simple</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Manual</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Complex</td>
+</tr>
+<!-- Category: AI & failure insights -->
+<tr class="category-header cursor-pointer" onclick="toggleCategory(this)">
+<td colspan="4" class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px]">
+<div class="flex justify-between items-center">
+<span>AI &amp; failure insights</span>
+<svg class="chevron-icon w-5 h-5 transition-transform duration-200" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+</div>
+</td>
+</tr>
+<tr class="sub-feature table-row" style="display: none;">
+<td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">✅</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">❌</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">✅</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<script>
+function toggleCategory(header) {
+  const chevron = header.querySelector('.chevron-icon');
+  let next = header.nextElementSibling;
+  const isExpanding = next && next.style.display === 'none';
+  while (next && next.classList.contains('sub-feature')) {
+    next.style.display = isExpanding ? 'table-row' : 'none';
+    next = next.nextElementSibling;
+  }
+  chevron.style.transform = isExpanding ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+</script>
+```
+
+### 🚨 Accordion Table Rules Summary
+
+1. **Wrapper:** Always wrap in `<div class="w-full rounded-[12px] border border-[#F5F5F5] overflow-hidden">`
+2. **Header row:** Uses `<thead>` with `<th>` cells and `bg-[#FAFAFA]` background
+3. **Fixed summary rows:** Standard `<tr>` — always visible, bold label in first cell
+4. **Category headers:** `<tr class="category-header cursor-pointer">` with `colspan` spanning all columns, chevron SVG, and `onclick="toggleCategory(this)"`
+5. **Sub-feature rows:** `<tr class="sub-feature table-row" style="display: none;">` — hidden by default
+6. **JavaScript:** Include `toggleCategory` function ONCE after the closing `</div>`
+7. **CTA row:** If present, keep as a standard visible `<tr>` (not a sub-feature)
+8. **`colspan` value:** Must match the total number of columns in the table
+9. **Sub-feature first cell:** Contains the row label text (e.g., "Onboarding Time") — leave empty if the label column is implicit from context
+10. **`[ct]` in cells:** Use default inline code styling (`bg-[#E9E9E9]`, `text-[#0B0C0E]`)
+
+### 🚨 How to Identify Category Headers vs Fixed Rows
+
+In the component formatter output:
+- **Category header rows** have bold text in the first cell and **empty remaining cells** — these become expandable `category-header` rows
+- **Fixed summary rows** have bold text in the first cell AND **data in the remaining cells** — these stay always visible
+- **Sub-feature rows** are non-bold rows that appear between two category headers — these become hidden `sub-feature` rows
+
+---
+
 ## WORDPRESS SHORTCODE COMPONENTS
 
 ### When to Add Components (AI Decision)
@@ -998,6 +1214,7 @@ Before finalizing output, verify:
 - [ ] 🚨 Every table's first row is wrapped in `<thead>` with `<th>` cells — never `<td>`
 - [ ] All data rows are wrapped in `<tbody>` with `<td>` cells
 - [ ] No bare `<tr>` rows directly inside `<table>` — always use `<thead>`/`<tbody>`
+- [ ] 🚨 `[accordion_table]` converted to accordion HTML: wrapper `<div>`, category headers with `onclick="toggleCategory(this)"` and chevron SVG, sub-feature rows with `style="display: none;"`, and `<script>` with `toggleCategory` function
 
 **Inline Code & Text:**
 - [ ] Confluence inline code uses `<code>` tag with the standard class attribute
@@ -1087,6 +1304,7 @@ export default defineConfig({
 9. ✅ `[warning]` markers automatically convert to `[notice_block]` with amber theme and warning icon (bg="#FEF3C7", icon=fi_768818.svg)
 10. ✅ `[tips_banner]` with "TL;DR" title kept as-is with yellow theme (bg="#FEFCE8", border="#FDE68A", color="#713F12")
 11. ✅ `[tips_banner]` with "What is X?" title kept as-is with blue theme (bg="#DBEAFE", border="#BFDBFE", color="#1E3A8A")
+12. ✅ `[accordion_table]` converted to interactive accordion HTML with category headers, sub-feature rows, chevron toggles, and `toggleCategory` JavaScript
 
 **HTML STRUCTURE RULES:**
 - Use clean, minimal HTML structure

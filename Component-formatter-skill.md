@@ -127,6 +127,64 @@ All other rows → <tbody> with <td> cells
 
 ---
 
+### 🚨 Accordion Table Detection Rules (AUTOMATIC)
+
+**What is an accordion table?**
+An accordion table is a comparison table where rows are grouped under expandable/collapsible category headers. The top of the table has a fixed summary section (product names, pricing, "best for", star ratings, etc.), and below that are category sections (e.g., "Getting Started", "AI & failure insights", "Test runs & summaries") that users can click to expand or collapse, revealing the detail rows underneath.
+
+**When to tag as `[accordion_table]`:**
+Automatically detect and tag a markdown table as an accordion table when ALL of these conditions are true:
+- ✅ The table is a **product/tool comparison** with multiple products as columns
+- ✅ The table contains **category/group header rows** — rows where the first cell is a bold section name (e.g., `**Getting Started**`, `**AI & failure insights**`) and the remaining cells are empty or contain only a collapse indicator (like `↓` or `∨`)
+- ✅ Under each category header, there are **detail rows** with feature-by-feature data (e.g., "Onboarding Time", "Setup Complexity") with values in each product column
+- ✅ The table has a **fixed top section** with summary info (pricing, "best for", star ratings, framework support) that is always visible
+
+**How to identify category header rows in markdown:**
+Category header rows look like this in the markdown source:
+```
+| **Getting Started** | | | | | |
+| **AI & failure insights** | | | | | |
+| **Test cases** | | | | | |
+```
+The first cell has bold text and the remaining cells are empty — these are the expandable section headers.
+
+**Format:**
+```
+[accordion_table]
+
+| | Product A | Product B | Product C |
+| --- | --- | --- | --- |
+| **Pricing (starts at)** | $49/month | $599/month | $199/month |
+| **Best for** | Reporting | Dashboards | Analytics |
+| **Getting Started** | | | |
+| Onboarding Time | Quick setup | Slower | Quick setup |
+| Setup Complexity | Simple | Manual | Complex |
+| **AI & failure insights** | | | |
+| AI root-cause analysis | ✅ | ❌ | ✅ |
+| Smart failure grouping | ✅ | ✅ | ❌ |
+
+[/accordion_table]
+```
+
+**🚨 CRITICAL RULES:**
+- The `[accordion_table]` tag wraps the ENTIRE markdown table — do not split the table
+- Do NOT modify any content inside the table — only add the wrapper tags
+- The HTML skill will handle rendering the expandable/collapsible behavior and styling
+- Bold rows with empty remaining cells (`| **Section Name** | | | | | |`) are the accordion section headers
+- All rows between two category headers belong to the preceding category
+- The top summary rows (before the first category header) remain always visible and are not collapsible
+
+**How to distinguish from a regular table:**
+- **Regular table:** All rows are independent data rows, no grouping structure
+- **Accordion table:** Has bold category header rows with empty cells that group detail rows beneath them
+
+**🚨 IMPORTANT:**
+- This detection is AUTOMATIC — if a comparison table has expandable category sections, it MUST be wrapped with `[accordion_table]`
+- Do NOT use `[accordion_table]` for simple comparison tables without category groupings
+- The last row of the table (if it contains CTA links like "Try for free" / "Learn more") stays inside the accordion table wrapper
+
+---
+
 ### Input/Output Rules
 
 1. **Input:** Plain blog content (text with headings, paragraphs, code, lists)
@@ -143,6 +201,7 @@ All other rows → <tbody> with <td> cells
 - ✅ `[tip]` – Required when content contains tip patterns (see Tip Detection Rules below)
 - ✅ `[note]` – Required when content contains "NOTE:" or "Note:" (see Note Detection Rules below)
 - ✅ `[warning]` – Required when content contains warning patterns (see Warning Detection Rules below)
+- ✅ `[accordion_table]` – Required for comparison tables with expandable category sections (see Accordion Table Detection Rules below)
 
 **NEVER add these components unless user explicitly requests:**
 - ❌ `[info_banner]` – Only if user explicitly requests
@@ -685,6 +744,7 @@ Before finalizing output, verify:
 **Tables:**
 - [ ] First row of every table contains column headers (not data) — HTML skill will wrap it in `<thead>` with `<th>` cells
 - [ ] All code-like content in table cells is wrapped with `[ct]`
+- [ ] Comparison tables with bold category header rows (expandable sections) are wrapped with `[accordion_table]`
 
 **Code Light Usage:**
 - [ ] Code lights ONLY wrap actual multi-line code/commands
