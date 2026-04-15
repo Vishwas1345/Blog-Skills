@@ -456,30 +456,75 @@ These are rows above the first category header — pricing, "best for", ratings,
 </tr>
 ```
 
-**Sub-feature rows (hidden by default, shown on toggle):**
+**Sub-feature rows (collapsed by default, smoothly expanded on toggle):**
 ```html
-<tr class="sub-feature table-row" style="display: none;">
+<tr class="sub-feature">
   <td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
   <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Feature value</td>
   <!-- repeat for each column -->
 </tr>
 ```
 
+**🚨 DO NOT use `style="display: none;"`** on sub-feature rows. The CSS handles the collapsed state by setting `max-height: 0`, `padding: 0`, and `opacity: 0` on the `<td>` cells. When the `.open` class is toggled, CSS transitions smoothly animate these properties.
+
 **🚨 IMPORTANT:** In sub-feature rows, the **first `<td>`** (the row label column) uses `font-[500]` and class `lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]`. The remaining `<td>` cells (data columns) use `font-normal` and class `px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]`.
 
 **CTA / last row (always visible):**
 If the table has a final row with CTA links ("Try for free", "Learn more"), it stays visible — do NOT make it a sub-feature. Use standard `<tr>` with `<td>` containing `<a>` links.
 
-### JavaScript (add ONCE at the end of the accordion table)
+### CSS (add ONCE inside the accordion table `<style>` block)
+
+The smooth animation works by transitioning `max-height`, `opacity`, and `padding` on the `<td>` cells instead of toggling `display` on the `<tr>`. Table rows cannot be animated with CSS transitions on `display`, so the sub-feature rows stay as `display: table-row` at all times and instead collapse/expand via their cell content.
+
+```html
+<style>
+.sub-feature td {
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.25s ease;
+  border-bottom-color: transparent;
+}
+.sub-feature.open td {
+  max-height: 80px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  opacity: 1;
+  border-bottom-color: #F5F5F5;
+}
+.chevron-icon {
+  transition: transform 0.3s ease;
+}
+</style>
+```
+
+**🚨 CRITICAL CHANGE FROM INSTANT TOGGLE:** Sub-feature rows are **NOT** set to `display: none` anymore. Instead they always remain `display: table-row` but start **collapsed** (zero height/padding/opacity). The `.open` class is toggled to expand them smoothly.
+
+**Sub-feature rows now render as (no `style="display: none;"`):**
+```html
+<tr class="sub-feature">
+  <td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
+  <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Feature value</td>
+  <!-- repeat for each column -->
+</tr>
+```
+
+### JavaScript (add ONCE at the end of the accordion table, after the closing `</div>`)
 
 ```html
 <script>
 function toggleCategory(header) {
   const chevron = header.querySelector('.chevron-icon');
   let next = header.nextElementSibling;
-  const isExpanding = next && next.style.display === 'none';
+  const isExpanding = next && !next.classList.contains('open');
   while (next && next.classList.contains('sub-feature')) {
-    next.style.display = isExpanding ? 'table-row' : 'none';
+    if (isExpanding) {
+      next.classList.add('open');
+    } else {
+      next.classList.remove('open');
+    }
     next = next.nextElementSibling;
   }
   chevron.style.transform = isExpanding ? 'rotate(180deg)' : 'rotate(0deg)';
@@ -520,6 +565,27 @@ Use ✅, ❌, and ⚠️ directly as text content in `<td>` cells — no special
 **Output HTML:**
 ```html
 <div class="w-full rounded-[12px] border border-[#F5F5F5] overflow-hidden">
+<style>
+.sub-feature td {
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0;
+  padding-bottom: 0;
+  opacity: 0;
+  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.25s ease;
+  border-bottom-color: transparent;
+}
+.sub-feature.open td {
+  max-height: 80px;
+  padding-top: 18px;
+  padding-bottom: 18px;
+  opacity: 1;
+  border-bottom-color: #F5F5F5;
+}
+.chevron-icon {
+  transition: transform 0.3s ease;
+}
+</style>
 <table class="w-full border-collapse">
 <thead>
 <tr>
@@ -552,13 +618,13 @@ Use ✅, ❌, and ⚠️ directly as text content in `<td>` cells — no special
 </div>
 </td>
 </tr>
-<tr class="sub-feature table-row" style="display: none;">
+<tr class="sub-feature">
 <td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
 <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Quick setup</td>
 <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Slower</td>
 <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Quick setup</td>
 </tr>
-<tr class="sub-feature table-row" style="display: none;">
+<tr class="sub-feature">
 <td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
 <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Simple</td>
 <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Manual</td>
@@ -573,7 +639,7 @@ Use ✅, ❌, and ⚠️ directly as text content in `<td>` cells — no special
 </div>
 </td>
 </tr>
-<tr class="sub-feature table-row" style="display: none;">
+<tr class="sub-feature">
 <td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
 <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">✅</td>
 <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">❌</td>
@@ -587,9 +653,13 @@ Use ✅, ❌, and ⚠️ directly as text content in `<td>` cells — no special
 function toggleCategory(header) {
   const chevron = header.querySelector('.chevron-icon');
   let next = header.nextElementSibling;
-  const isExpanding = next && next.style.display === 'none';
+  const isExpanding = next && !next.classList.contains('open');
   while (next && next.classList.contains('sub-feature')) {
-    next.style.display = isExpanding ? 'table-row' : 'none';
+    if (isExpanding) {
+      next.classList.add('open');
+    } else {
+      next.classList.remove('open');
+    }
     next = next.nextElementSibling;
   }
   chevron.style.transform = isExpanding ? 'rotate(180deg)' : 'rotate(0deg)';
@@ -603,12 +673,13 @@ function toggleCategory(header) {
 2. **Header row:** Uses `<thead>` with `<th>` cells and `bg-[#FAFAFA]` background
 3. **Fixed summary rows:** Standard `<tr>` — always visible, bold label in first cell
 4. **Category headers:** `<tr class="category-header cursor-pointer">` with `colspan` spanning all columns, chevron SVG, and `onclick="toggleCategory(this)"`
-5. **Sub-feature rows:** `<tr class="sub-feature table-row" style="display: none;">` — hidden by default
-6. **JavaScript:** Include `toggleCategory` function ONCE after the closing `</div>`
-7. **CTA row:** If present, keep as a standard visible `<tr>` (not a sub-feature)
-8. **`colspan` value:** Must match the total number of columns in the table
-9. **Sub-feature first cell:** Contains the row label text (e.g., "Onboarding Time") — leave empty if the label column is implicit from context
-10. **`[ct]` in cells:** Use default inline code styling (`bg-[#E9E9E9]`, `text-[#0B0C0E]`)
+5. **Sub-feature rows:** `<tr class="sub-feature">` — collapsed via CSS (zero max-height/padding/opacity), NO `style="display: none;"`
+6. **CSS `<style>` block:** Include ONCE inside the wrapper `<div>`, before the `<table>` — handles smooth transitions on `max-height`, `padding`, `opacity`, and `border-bottom-color`
+7. **JavaScript:** Include `toggleCategory` function ONCE after the closing `</div>` — toggles `.open` class (not display property)
+8. **CTA row:** If present, keep as a standard visible `<tr>` (not a sub-feature)
+9. **`colspan` value:** Must match the total number of columns in the table
+10. **Sub-feature first cell:** Contains the row label text (e.g., "Onboarding Time") — leave empty if the label column is implicit from context
+11. **`[ct]` in cells:** Use default inline code styling (`bg-[#E9E9E9]`, `text-[#0B0C0E]`)
 
 ### 🚨 How to Identify Category Headers vs Fixed Rows
 
@@ -1214,7 +1285,7 @@ Before finalizing output, verify:
 - [ ] 🚨 Every table's first row is wrapped in `<thead>` with `<th>` cells — never `<td>`
 - [ ] All data rows are wrapped in `<tbody>` with `<td>` cells
 - [ ] No bare `<tr>` rows directly inside `<table>` — always use `<thead>`/`<tbody>`
-- [ ] 🚨 `[accordion_table]` converted to accordion HTML: wrapper `<div>`, category headers with `onclick="toggleCategory(this)"` and chevron SVG, sub-feature rows with `style="display: none;"`, and `<script>` with `toggleCategory` function
+- [ ] 🚨 `[accordion_table]` converted to accordion HTML: wrapper `<div>` with `<style>` block for smooth CSS transitions, category headers with `onclick="toggleCategory(this)"` and chevron SVG, sub-feature rows using `.sub-feature` class (NO `display: none`), and `<script>` with `toggleCategory` function that toggles `.open` class
 
 **Inline Code & Text:**
 - [ ] Confluence inline code uses `<code>` tag with the standard class attribute
