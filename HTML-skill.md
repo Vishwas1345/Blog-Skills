@@ -108,6 +108,13 @@ When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag with
 - Background: `bg-[#171717]` (white)
 - Text color: `text-[#713F12]` (dark brown, matches Tip text color)
 
+**Inside Warning Notice Block:**
+```html
+<span class="text-[#92400E] ff-geist-mono bg-[#FFFFFF] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">code text</span>
+```
+- Background: `bg-[#FFFFFF]` (white)
+- Text color: `text-[#92400E]` (dark amber, matches Warning text color)
+
 **Examples (Default):**
 - `[ct]npx playwright test[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">npx playwright test</span>`
 - `[ct].github/workflows/playwright.yml[/ct]` → `<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">.github/workflows/playwright.yml</span>`
@@ -117,7 +124,7 @@ When content uses `[ct]code[/ct]` shortcode, convert to styled `<span>` tag with
 **When to use which:**
 - Use `<code>` tag for Confluence-sourced inline code
 - Use `<span>` tag for `[ct]` shortcode from component formatter
-- **Apply context-aware styling** when `[ct]` appears inside Tip or Note notice blocks
+- **Apply context-aware styling** when `[ct]` appears inside Tip, Note, or Warning notice blocks
 
 ---
 
@@ -393,6 +400,323 @@ Every HTML table MUST use `<thead>` for the first (header) row and `<tbody>` for
 - ❌ NEVER put the header row inside `<tbody>`
 - ❌ NEVER use `<td>` for header cells — always use `<th>` in `<thead>`
 - ❌ NEVER omit `<thead>` and `<tbody>` — bare `<tr>` rows inside `<table>` are not allowed
+
+---
+
+## 🚨 ACCORDION TABLE CONVERSION (FROM COMPONENT FORMATTER)
+
+**When component formatter outputs `[accordion_table]...[/accordion_table]`, convert the markdown table inside into an interactive accordion HTML table.**
+
+**🚨 CRITICAL RULE: The accordion table HTML structure, classes, CSS, and JavaScript are FIXED. The AI must only replace the CONTENT (text values, URLs, number of columns, number of rows) — never change any class names, HTML structure, element nesting, button styling, or script logic. Think of it as a fixed template where only the data inside cells changes.**
+
+An accordion table has:
+- A **fixed top section** (always visible) — summary rows like pricing, "best for", star ratings
+- **Category header rows** — bold section names (e.g., "Getting Started", "AI & failure insights") that expand/collapse
+- **Sub-feature rows** — detail rows hidden by default, revealed when the category header is clicked
+
+### HTML Structure
+
+**Wrapper:**
+```html
+<div class="w-full rounded-[12px] border border-[#F5F5F5] overflow-hidden">
+<table class="w-full border-collapse">
+  <thead>...</thead>
+  <tbody>...</tbody>
+</table>
+</div>
+```
+
+**Header row (`<thead>`):**
+```html
+<thead>
+<tr>
+  <th class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px] bg-[#FAFAFA]">Column Name</th>
+  <!-- repeat for each column -->
+</tr>
+</thead>
+```
+
+**Fixed summary rows (always visible, NOT collapsible):**
+These are rows above the first category header — pricing, "best for", ratings, etc. They use standard `<tr>` with no special class:
+```html
+<tr>
+  <td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"><strong>Pricing (starts at)</strong></td>
+  <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">$49/month</td>
+  <!-- repeat for each column -->
+</tr>
+```
+
+**Category header row (expandable/collapsible toggle):**
+```html
+<tr class="category-header cursor-pointer" onclick="toggleCategory(this)">
+  <td colspan="TOTAL_COLUMNS" class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px]">
+    <div class="flex justify-between items-center">
+      <span>Category Name</span>
+      <svg class="chevron-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+    </div>
+  </td>
+</tr>
+```
+
+**Sub-feature rows (collapsed by default, smoothly expanded on toggle):**
+```html
+<tr class="sub-feature">
+  <td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
+  <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Feature value</td>
+  <!-- repeat for each column -->
+</tr>
+```
+
+**🚨 DO NOT use `style="display: none;"`** on sub-feature rows. The CSS handles the collapsed state by setting `max-height: 0`, `padding: 0 !important`, `opacity: 0`, `line-height: 0`, and `font-size: 0` on the `<td>` cells. When the `.open` class is toggled, CSS transitions smoothly animate these properties. The `!important` on padding is required to override Tailwind utility padding classes.
+
+**🚨 IMPORTANT:** In sub-feature rows, the **first `<td>`** (the row label column) uses `font-[500]` and class `lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]`. The remaining `<td>` cells (data columns) use `font-normal` and class `px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]`.
+
+**CTA / last row (always visible):**
+If the table has a final row with CTA links ("Try for free", "Learn more"), it stays visible — do NOT make it a sub-feature. Use standard `<tr>` with `<td>` containing `<a>` links.
+
+### CSS (add ONCE inside the accordion table `<style>` block)
+
+The smooth animation works by transitioning `max-height`, `opacity`, `padding`, `line-height`, and `font-size` on the `<td>` cells instead of toggling `display` on the `<tr>`. Table rows cannot be animated with CSS transitions on `display`, so the sub-feature rows stay as `display: table-row` at all times and instead collapse/expand via their cell content. The `!important` on padding overrides Tailwind utility classes. The `font-size: 0` / `line-height: 0` in the collapsed state ensures text doesn't take up space, while the responsive media query adjusts font-size to `16px` on `md:` breakpoint. The `span` and `strong` rule ensures child elements inherit the animated font-size.
+
+```html
+<style>
+.sub-feature td {
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  opacity: 0;
+  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.25s ease;
+  border-bottom-color: transparent;
+  line-height: 0;
+  font-size: 0;
+}
+.sub-feature.open td {
+  max-height: 80px;
+  padding-top: 18px !important;
+  padding-bottom: 18px !important;
+  opacity: 1;
+  border-bottom-color: #F5F5F5;
+  line-height: 24px;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .sub-feature.open td {
+    font-size: 16px;
+  }
+}
+.sub-feature td span,
+.sub-feature td strong {
+  transition: font-size 0.3s ease;
+  font-size: inherit;
+}
+.chevron-icon {
+  transition: transform 0.3s ease;
+}
+</style>
+```
+
+**🚨 CRITICAL CHANGE FROM INSTANT TOGGLE:** Sub-feature rows are **NOT** set to `display: none` anymore. Instead they always remain `display: table-row` but start **collapsed** (zero max-height/padding/opacity/line-height/font-size). The `.open` class is toggled to expand them smoothly. Padding uses `!important` to override Tailwind utilities.
+
+**Sub-feature rows now render as (no `style="display: none;"`):**
+```html
+<tr class="sub-feature">
+  <td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
+  <td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Feature value</td>
+  <!-- repeat for each column -->
+</tr>
+```
+
+### JavaScript (add ONCE at the end of the accordion table, after the closing `</div>`)
+
+```html
+<script>
+function toggleCategory(header) {
+  const chevron = header.querySelector('.chevron-icon');
+  let next = header.nextElementSibling;
+  const isExpanding = next && !next.classList.contains('open');
+  while (next && next.classList.contains('sub-feature')) {
+    if (isExpanding) {
+      next.classList.add('open');
+    } else {
+      next.classList.remove('open');
+    }
+    next = next.nextElementSibling;
+  }
+  chevron.style.transform = isExpanding ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+</script>
+```
+
+### Inline Code in Accordion Tables
+
+Any `[ct]` shortcode inside table cells uses the **default** inline code styling (same as regular tables):
+```html
+<span class="text-[#0B0C0E] ff-geist-mono bg-[#E9E9E9] rounded-[4px] font-[500]" style="padding-left: 5px; padding-right: 5px; font-size: 15px;">code text</span>
+```
+
+### Emoji/Icon Cells
+
+Use ✅, ❌, and ⚠️ directly as text content in `<td>` cells — no special wrapping needed.
+
+### Complete Example
+
+**Input from component formatter:**
+```
+[accordion_table]
+
+| | Product A | Product B | Product C |
+| --- | --- | --- | --- |
+| **Pricing (starts at)** | $49/month | $599/month | $199/month |
+| **Best for** | Reporting | Dashboards | Analytics |
+| **Getting Started** | | | |
+| Onboarding Time | Quick setup | Slower | Quick setup |
+| Setup Complexity | Simple | Manual | Complex |
+| **AI & failure insights** | | | |
+| AI root-cause analysis | ✅ | ❌ | ✅ |
+
+[/accordion_table]
+```
+
+**Output HTML:**
+```html
+<div class="w-full rounded-[12px] border border-[#F5F5F5] overflow-hidden">
+<style>
+.sub-feature td {
+  max-height: 0;
+  overflow: hidden;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  opacity: 0;
+  transition: max-height 0.3s ease, padding 0.3s ease, opacity 0.25s ease;
+  border-bottom-color: transparent;
+  line-height: 0;
+  font-size: 0;
+}
+.sub-feature.open td {
+  max-height: 80px;
+  padding-top: 18px !important;
+  padding-bottom: 18px !important;
+  opacity: 1;
+  border-bottom-color: #F5F5F5;
+  line-height: 24px;
+  font-size: 14px;
+}
+@media (min-width: 768px) {
+  .sub-feature.open td {
+    font-size: 16px;
+  }
+}
+.sub-feature td span,
+.sub-feature td strong {
+  transition: font-size 0.3s ease;
+  font-size: inherit;
+}
+.chevron-icon {
+  transition: transform 0.3s ease;
+}
+</style>
+<table class="w-full border-collapse">
+<thead>
+<tr>
+<th class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px] bg-[#FAFAFA]"></th>
+<th class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px] bg-[#FAFAFA]">Product A</th>
+<th class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px] bg-[#FAFAFA]">Product B</th>
+<th class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px] bg-[#FAFAFA]">Product C</th>
+</tr>
+</thead>
+<tbody>
+<!-- Fixed summary rows (always visible) -->
+<tr>
+<td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"><strong>Pricing (starts at)</strong></td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">$49/month</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">$599/month</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">$199/month</td>
+</tr>
+<tr>
+<td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"><strong>Best for</strong></td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Reporting</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Dashboards</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Analytics</td>
+</tr>
+<!-- Category: Getting Started -->
+<tr class="category-header cursor-pointer" onclick="toggleCategory(this)">
+<td colspan="4" class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px]">
+<div class="flex justify-between items-center">
+<span>Getting Started</span>
+<svg class="chevron-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+</div>
+</td>
+</tr>
+<tr class="sub-feature">
+<td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Quick setup</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Slower</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Quick setup</td>
+</tr>
+<tr class="sub-feature">
+<td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Simple</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Manual</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">Complex</td>
+</tr>
+<!-- Category: AI & failure insights -->
+<tr class="category-header cursor-pointer" onclick="toggleCategory(this)">
+<td colspan="4" class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-[#F5F5F5] font-geist font-[600] text-[14px] md:text-[16px]">
+<div class="flex justify-between items-center">
+<span>AI &amp; failure insights</span>
+<svg class="chevron-icon w-5 h-5" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/></svg>
+</div>
+</td>
+</tr>
+<tr class="sub-feature">
+<td class="lg:px-[20px] p-2 pl-[20px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-[500] text-[14px] md:text-[16px]"></td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">✅</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">❌</td>
+<td class="px-2 py-[18px] md:p-4 text-start border-b border-r border-[#F5F5F5] font-geist font-normal text-[14px] md:text-[16px] leading-[24px]">✅</td>
+</tr>
+</tbody>
+</table>
+</div>
+
+<script>
+function toggleCategory(header) {
+  const chevron = header.querySelector('.chevron-icon');
+  let next = header.nextElementSibling;
+  const isExpanding = next && !next.classList.contains('open');
+  while (next && next.classList.contains('sub-feature')) {
+    if (isExpanding) {
+      next.classList.add('open');
+    } else {
+      next.classList.remove('open');
+    }
+    next = next.nextElementSibling;
+  }
+  chevron.style.transform = isExpanding ? 'rotate(180deg)' : 'rotate(0deg)';
+}
+</script>
+```
+
+### 🚨 Accordion Table Rules Summary
+
+1. **Wrapper:** Always wrap in `<div class="w-full rounded-[12px] border border-[#F5F5F5] overflow-hidden">`
+2. **Header row:** Uses `<thead>` with `<th>` cells and `bg-[#FAFAFA]` background
+3. **Fixed summary rows:** Standard `<tr>` — always visible, bold label in first cell
+4. **Category headers:** `<tr class="category-header cursor-pointer">` with `colspan` spanning all columns, chevron SVG, and `onclick="toggleCategory(this)"`
+5. **Sub-feature rows:** `<tr class="sub-feature">` — collapsed via CSS (zero max-height/padding/opacity/line-height/font-size), NO `style="display: none;"`
+6. **CSS `<style>` block:** Include ONCE inside the wrapper `<div>`, before the `<table>` — handles smooth transitions on `max-height`, `padding` (with `!important`), `opacity`, `border-bottom-color`, `line-height`, and `font-size`. Includes responsive `@media (min-width: 768px)` for font-size and a `.sub-feature td span, .sub-feature td strong` rule for inherited font-size transitions
+7. **JavaScript:** Include `toggleCategory` function ONCE after the closing `</div>` — toggles `.open` class (not display property)
+8. **CTA row:** If present, keep as a standard visible `<tr>` (not a sub-feature)
+9. **`colspan` value:** Must match the total number of columns in the table
+10. **Sub-feature first cell:** Contains the row label text (e.g., "Onboarding Time") — leave empty if the label column is implicit from context
+11. **`[ct]` in cells:** Use default inline code styling (`bg-[#E9E9E9]`, `text-[#0B0C0E]`)
+
+### 🚨 How to Identify Category Headers vs Fixed Rows
+
+In the component formatter output:
+- **Category header rows** have bold text in the first cell and **empty remaining cells** — these become expandable `category-header` rows
+- **Fixed summary rows** have bold text in the first cell AND **data in the remaining cells** — these stay always visible
+- **Sub-feature rows** are non-bold rows that appear between two category headers — these become hidden `sub-feature` rows
 
 ---
 
@@ -701,6 +1025,79 @@ NOTE: Note content here. [ct]npx playwright test[/ct]
 - ALWAYS use `icon=""` (empty string - NO icon for notes)
 - Notes use GREEN theme, Tips use YELLOW theme - completely different styling
 
+### 🚨 Warning Conversion (AUTOMATIC - FROM COMPONENT FORMATTER)
+
+**When component formatter outputs `[warning]...[/warning]`, convert to notice_block with amber warning styling:**
+
+**Format:**
+```html
+[notice_block bg="#FEF3C7" border="#FCD34D" color="#92400E" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]<strong>Warning:</strong> Warning content here.[/notice_block]
+```
+
+**🚨 CRITICAL STYLING - AMBER THEME WITH WARNING ICON:**
+- Background: `bg="#FEF3C7"` (light amber)
+- Border: `border="#FCD34D"` (amber)
+- Text color: `color="#92400E"` (dark amber)
+- Icon: `icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"` (warning icon)
+
+**🚨 DO NOT CONFUSE WITH TIPS OR NOTES:**
+- **TIPS**: Yellow theme (`#FEFCE8`, `#FDE68A`, `#713F12`) with sparkle icon
+- **NOTES**: Green theme (`#E1FFF0`, `#A7F3D0`, `#065F46`) with NO icon
+- **WARNINGS**: Amber theme (`#FEF3C7`, `#FCD34D`, `#92400E`) with warning icon
+
+**Examples:**
+
+**Input from component formatter:**
+```
+Inside Warning: [warning]
+WARNING: Video recordings may capture sensitive data visible in the browser. Treat video artifacts with the same access controls you apply to your application logs.
+[/warning]
+```
+
+**Output HTML:**
+```html
+[notice_block bg="#FEF3C7" border="#FCD34D" color="#92400E" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]<strong>Warning:</strong> Video recordings may capture sensitive data visible in the browser. Treat video artifacts with the same access controls you apply to your application logs.[/notice_block]
+```
+
+**Another Example:**
+
+**Input:**
+```
+Inside Warning: [warning]
+CAUTION: Running all tests with video recording enabled can consume significant disk space in CI.
+[/warning]
+```
+
+**Output:**
+```html
+[notice_block bg="#FEF3C7" border="#FCD34D" color="#92400E" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]<strong>Caution:</strong> Running all tests with video recording enabled can consume significant disk space in CI.[/notice_block]
+```
+
+**Example with Inline Code `[ct]`:**
+
+**Input:**
+```
+Inside Warning: [warning]
+WARNING: Never use [ct]video: 'on'[/ct] in production CI pipelines.
+[/warning]
+```
+
+**Output:**
+```html
+[notice_block bg="#FEF3C7" border="#FCD34D" color="#92400E" icon="https://testdino.com/wp-content/uploads/2026/01/fi_768818.svg"]<strong>Warning:</strong> Never use <span class="text-[#92400E] ff-geist-mono bg-[#FFFFFF] rounded-[4px] font-[500]" style="padding-left: 5px;padding-right: 5px;font-size: 15px;">video: 'on'</span> in production CI pipelines.[/notice_block]
+```
+
+**🚨 CRITICAL FOR WARNINGS WITH INLINE CODE:**
+- When `[ct]` appears inside Warning notice blocks, use `bg-[#FFFFFF]` (white) and `text-[#92400E]` (dark amber)
+- This ensures the inline code stands out against the amber Warning background
+
+**🚨 IMPORTANT:**
+- **BOLD the prefix** using `<strong>` tag (e.g., `<strong>Warning:</strong>`, `<strong>Caution:</strong>`)
+- Convert prefix to title case (WARNING: → Warning:, CAUTION: → Caution:)
+- Use EXACT color values provided above (amber theme)
+- Use the specific warning icon URL (`fi_768818.svg`)
+- Warnings use AMBER theme, Tips use YELLOW theme, Notes use GREEN theme - all completely different styling
+
 ### Tip Block (DEPRECATED - Use tips_banner instead)
 
 **⚠️ NOTE:** For definitions and term explanations, use `[tips_banner]` with blue theme instead.
@@ -918,14 +1315,16 @@ Before finalizing output, verify:
 - [ ] 🚨 Every table's first row is wrapped in `<thead>` with `<th>` cells — never `<td>`
 - [ ] All data rows are wrapped in `<tbody>` with `<td>` cells
 - [ ] No bare `<tr>` rows directly inside `<table>` — always use `<thead>`/`<tbody>`
+- [ ] 🚨 `[accordion_table]` converted to accordion HTML: wrapper `<div>` with `<style>` block for smooth CSS transitions (padding with `!important`, `line-height`, `font-size`, responsive `@media` query, `span`/`strong` font-size inherit rule), category headers with `onclick="toggleCategory(this)"` and chevron SVG, sub-feature rows using `.sub-feature` class (NO `display: none`), and `<script>` with `toggleCategory` function that toggles `.open` class
 
 **Inline Code & Text:**
 - [ ] Confluence inline code uses `<code>` tag with the standard class attribute
 - [ ] `[ct]` shortcode converts to `<span>` with Geist Mono styling and `font-size: 15px` (applies to sentences and table cells)
 - [ ] 🚨 `[ct]` uses context-aware styling:
-  - [ ] Default (outside Tip/Note): `bg-[#E9E9E9]` and `text-[#0B0C0E]`
+  - [ ] Default (outside Tip/Note/Warning): `bg-[#E9E9E9]` and `text-[#0B0C0E]`
   - [ ] Inside Note notice blocks: `bg-[#FDFFFE]` and `text-[#065F46]`
   - [ ] Inside Tip notice blocks: `bg-[#FFFFFF]` and `text-[#713F12]`
+  - [ ] Inside Warning notice blocks: `bg-[#FFFFFF]` and `text-[#92400E]`
 - [ ] Bold text uses `<strong data-renderer-mark="true">`
 - [ ] All links have full class attribute string
 - [ ] NO custom classes or CSS added (only standard tags and example-based classes)
@@ -937,6 +1336,7 @@ Before finalizing output, verify:
 - [ ] TL;DR kept as `[tips_banner]` with yellow styling (title="TL;DR", bg="#FEFCE8", border="#FDE68A", color="#713F12")
 - [ ] Tips (`[tip]`) converted to `[notice_block]` with yellow styling (bg="#FEFCE8", border="#FDE68A", color="#713F12", icon=sparkle)
 - [ ] Notes (`[note]`) converted to `[notice_block]` with green styling (bg="#E1FFF0", border="#A7F3D0", color="#065F46", icon="")
+- [ ] Warnings (`[warning]`) converted to `[notice_block]` with amber styling (bg="#FEF3C7", border="#FCD34D", color="#92400E", icon=warning)
 - [ ] Global `<style>` tag included at top of document for automatic image box-shadow
 - [ ] Images use simple `<img>` tags without inline box-shadow styles (handled by global style)
 
@@ -1002,8 +1402,10 @@ export default defineConfig({
 6. ✅ Global `<style>` tag for image box-shadow (automatically applies to all images - no inline styles needed)
 7. ✅ `[tip]` markers automatically convert to `[notice_block]` with yellow theme and sparkle icon (bg="#FEFCE8")
 8. ✅ `[note]` markers automatically convert to `[notice_block]` with green theme and NO icon (bg="#E1FFF0", icon="")
-9. ✅ `[tips_banner]` with "TL;DR" title kept as-is with yellow theme (bg="#FEFCE8", border="#FDE68A", color="#713F12")
-10. ✅ `[tips_banner]` with "What is X?" title kept as-is with blue theme (bg="#DBEAFE", border="#BFDBFE", color="#1E3A8A")
+9. ✅ `[warning]` markers automatically convert to `[notice_block]` with amber theme and warning icon (bg="#FEF3C7", icon=fi_768818.svg)
+10. ✅ `[tips_banner]` with "TL;DR" title kept as-is with yellow theme (bg="#FEFCE8", border="#FDE68A", color="#713F12")
+11. ✅ `[tips_banner]` with "What is X?" title kept as-is with blue theme (bg="#DBEAFE", border="#BFDBFE", color="#1E3A8A")
+12. ✅ `[accordion_table]` converted to interactive accordion HTML with category headers, sub-feature rows, chevron toggles, and `toggleCategory` JavaScript
 
 **HTML STRUCTURE RULES:**
 - Use clean, minimal HTML structure
